@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %} ПЦР {% endblock %}
+
+{% block body %}
+<div class="container">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th class="col">Дата</th>
+                <th class="col">Выполнено</th>
+                <th class="col">Отправлено</th>
+                <th class="col">Ошибки</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in records %}
+                <tr>
+                    <td>{{ record.date }}</td>
+                    <td>{{ record.done }}</td>
+                    <td>{{ record.sent }}</td>
+                    <td>{{ record.mistakes }}</td>
+                </tr>
+            {%endfor%}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
