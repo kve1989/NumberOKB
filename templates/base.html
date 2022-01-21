@@ -8,14 +8,9 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
 </head>
 <body>
-    <ul class="nav bg-dark justify-content-end p-2">
-        <li class="nav-item">
-            <a class="btn btn-warning" aria-current="page" href="/create">Добавить</a>
-        </li>
 
-    </ul>
+    {% block body %}{% endblock %}
 
-{% block body %}{% endblock %}
 <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
 </body>
 </html>
