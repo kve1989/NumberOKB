@@ -5,9 +5,21 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Цифры ОКБ - {% block title %}{% endblock %}</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.png') }}" type="image/x-icon">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
 </head>
 <body>
+    <nav class="navbar bg-dark">
+        <div class="container-fluid">
+            <a href="/" class="navbar-brand">Home</a>
+            <ul class="navbar-nav justify-content-end p-2">
+                <li class="nav-item">
+                    <a class="btn btn-warning" aria-current="page" href="/create">Добавить</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
 
     {% block body %}{% endblock %}
 

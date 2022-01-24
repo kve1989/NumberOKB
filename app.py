@@ -1,12 +1,13 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, flash
 from flask_sqlalchemy import SQLAlchemy
 from datetime import (datetime, date)
-from flask_bootstrap import Bootstrap
+
+from forms import *
 
 app = Flask(__name__)
-bootstrap = Bootstrap(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SECRET_KEY'] = '01f260718007c0bd2ef3e9005b84ab97'
 db = SQLAlchemy(app)
 
 class PCR(db.Model):
@@ -27,6 +28,11 @@ def page_not_found(e):
 def internal_server_template(e):
     return render_template('500.html'), 500
 
+@app.route("/testform")
+def test():
+    form = PCRform()
+    return render_template('test.html', form=form)
+
 @app.route("/")
 def home():
     records = PCR.query.order_by(PCR.date).all()
@@ -35,6 +41,19 @@ def home():
 @app.route("/create")
 def create():
     return render_template('create.html')
+
+@app.route("/<int:id>/delete")
+def delete_record(id):
+    record = PCR.query.get_or_404(id)
+
+    try:
+        db.session.delete(record)
+        db.session.commit()
+        flash("Запись успешно удалена!", 'success')
+        return redirect('/')
+    except:
+        flash("Запись успешно удалена!", 'error')
+        return redirect('/')
 
 @app.route("/new", methods=['POST'])
 def new_record():
@@ -48,12 +67,10 @@ def new_record():
     try:
         db.session.add(record)
         db.session.commit()
+        flash("Запись успешно добавлена!", 'success')
         return redirect('/')
     except:
         return "Ошибка при добавлении"
-
-
-
 
 
 if __name__ == '__main__':

@@ -4,6 +4,17 @@
 
 {% block body %}
 <div class="container">
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endif %}
+    {% endwith %}
+
     <table class="table table-hover mt-3">
         <thead>
             <tr>
@@ -11,6 +22,7 @@
                 <th class="col">Выполнено</th>
                 <th class="col">Отправлено</th>
                 <th class="col">Ошибки</th>
+                <th class="col">Действия</th>
             </tr>
         </thead>
         <tbody>
@@ -20,8 +32,15 @@
                     <td>{{ record.done }}</td>
                     <td>{{ record.sent }}</td>
                     <td>{{ record.mistakes }}</td>
+                    <td>
+                        <a class="link" href="/edit/{{ record.id }}">Исправить</a>
+                        <a class="link text-danger" href="/{{ record.id }}/delete">Удалить</a>
+                    </td>
                 </tr>
             {%endfor%}
+                <tr>
+                    <td>Итого</td>
+                </tr>
         </tbody>
     </table>
 </div>
