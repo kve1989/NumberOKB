@@ -7,31 +7,34 @@
     <div class="card mt-3">
         <div class="card-header">Добавление записи</div>
         <div class="card-body">
-            <form action="/new" method="POST">
+            <form form action="/new" method="POST">
+                {{ form.csrf_token() }}
+
                 <div class="row">
-                    <label class="form-label col-6" for="">
-                        Дата
-                        <input type="date" class="form-control" name="date" id="date">
-                    </label>
-                    <label class="form-label col-6" for="">
-                        Выполнено:
-                        <input type="text" class="form-control" name="done" id="done">
-                    </label>
+                    <div class="col-6">
+                        {{ form.date.label(class="form-label") }}
+                        {{ form.date(class="form-control", value=record.date) }}
+                    </div>
+
+                    <div class="col-6">
+                        {{ form.sent.label(class="form-label") }}
+                        {{ form.sent(class="form-control", value=record.sent) }}
+                    </div>
                 </div>
-                <div class="row">
-                    <label class="form-label col-6" for="">
-                        Отправлено:
-                        <input type="text" class="form-control" name="sent" id="sent">
-                    </label>
-                    <label class="form-label col-6" for="">
-                        Ошибки:
-                        <input type="text" class="form-control" name="mistakes" id="mistakes">
-                    </label>
+                <div class="row mb-2">
+                    <div class="col-6">
+                        {{ form.done.label(class="form-label") }}
+                        {{ form.done(class="form-control", value=record.done) }}
+                    </div>
+
+                    <div class="col-6">
+                        {{ form.mistakes.label(class="form-label") }}
+                        {{ form.mistakes(class="form-control", value=record.mistakes) }}
+                    </div>
                 </div>
-                <button class="btn btn-primary" type="submit">Добавить</button>
+                <button class="btn btn-primary" type="submit">Создать</button>
             </form>
         </div>
     </div>
 </div>
-
 {% endblock %}
