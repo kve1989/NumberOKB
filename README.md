@@ -15,3 +15,7 @@ Windows:
 `./venv/Scripts/activate`
 
 `pip install -r requirements.txt`
+
+`>>> from app import db`
+
+`>>> db.create_all()`
