@@ -1,8 +1,9 @@
 from flask import Flask, render_template, request, redirect, flash
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime, date
+from datetime import datetime
 
 from forms import *
+from db import *
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.db'
@@ -10,16 +11,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = '01f260718007c0bd2ef3e9005b84ab97'
 
 db = SQLAlchemy(app)
-
-class PCR(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    date = db.Column(db.Date)
-    done = db.Column(db.Integer, nullable=False)
-    sent = db.Column(db.Integer, nullable=False)
-    mistakes = db.Column(db.Integer, nullable=False)
-
-    def __repr__(self):
-        return '<PCR %r>' % self.id
 
 @app.errorhandler(404)
 def page_not_found(e):
