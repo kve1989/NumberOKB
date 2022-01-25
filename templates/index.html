@@ -33,14 +33,18 @@
                     <td>{{ record.sent }}</td>
                     <td>{{ record.mistakes }}</td>
                     <td>
-                        <a class="link" href="/{{ record.id }}/edit">Исправить</a>
-                        <a class="link text-danger" href="/{{ record.id }}/delete">Удалить</a>
+                        <a class="link" href="{{ url_for('edit_record', id=record.id) }}">Исправить</a>
+                        <a class="link text-danger" href="{{ url_for('delete_record', id=record.id) }}">Удалить</a>
                     </td>
                 </tr>
             {%endfor%}
-                <tr>
+                <tr class="bg-warning">
                     <td>Итого</td>
+                    <td>{{ records|sum(attribute="done") }}</td>
+                    <td>{{ records|sum(attribute="sent") }}</td>
+                    <td>{{ records|sum(attribute="mistakes") }}</td>
                 </tr>
+
         </tbody>
     </table>
 </div>
