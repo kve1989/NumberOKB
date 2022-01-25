@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, flash
 from flask_sqlalchemy import SQLAlchemy
-from datetime import (datetime, date)
+from datetime import datetime, date
 
 from forms import *
 
@@ -13,7 +13,7 @@ db = SQLAlchemy(app)
 
 class PCR(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    date = db.Column(db.DateTime)
+    date = db.Column(db.Date)
     done = db.Column(db.Integer, nullable=False)
     sent = db.Column(db.Integer, nullable=False)
     mistakes = db.Column(db.Integer, nullable=False)
@@ -39,11 +39,6 @@ def home():
     records = PCR.query.order_by(PCR.date).all()
     return render_template('index.html', records=records)
 
-# @app.route("/create")
-# def create():
-#     return render_template('create.html')
-
-
 @app.route("/new", methods=['POST'])
 def new_record():
     date = datetime.strptime(request.form['date'], "%Y-%m-%d")
@@ -55,7 +50,6 @@ def new_record():
 
     if form.validate_on_submit():
         record = PCR(date=date, done=done,sent=sent,mistakes=mistakes)
-
         try:
             db.session.add(record)
             db.session.commit()
@@ -83,7 +77,27 @@ def delete_record(id):
 def edit_record(id):
     form = PCRform()
     record = PCR.query.get_or_404(id)
-    return render_template('create.html', record=record, form=form)
+    return render_template('edit.html', form=form, record=record)
+
+@app.route("/<int:id>/update", methods=['POST'])
+def update_record(id):
+    record = PCR.query.get_or_404(id)
+    record.date = datetime.strptime(request.form['date'], "%Y-%m-%d")
+    record.done = request.form['done']
+    record.sent = request.form['sent']
+    record.mistakes = request.form['mistakes']
+
+    form=PCRform()
+
+    if form.validate_on_submit():
+        try:
+            db.session.commit()
+            flash("Запись успешно изменена!", 'success')
+            return redirect('/')
+        except:
+            return "Ошибка при изменении"
+
+    return render_template('edit.html', form=form)
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)

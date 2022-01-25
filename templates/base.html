@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,10 +11,10 @@
 <body>
     <nav class="navbar bg-dark">
         <div class="container-fluid">
-            <a href="/" class="navbar-brand">Home</a>
+            <a href="{{ url_for('home') }}" class="navbar-brand">Home</a>
             <ul class="navbar-nav justify-content-end p-2">
                 <li class="nav-item">
-                    <a class="btn btn-warning" aria-current="page" href="/create">Добавить</a>
+                    <a class="btn btn-warning" aria-current="page" href="{{url_for('create')}}">Добавить</a>
                 </li>
             </ul>
         </div>
@@ -24,5 +24,6 @@
     {% block body %}{% endblock %}
 
 <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 </html>
