@@ -28,7 +28,8 @@
         <tbody>
             {% for record in records %}
                 <tr>
-                    <td>{{ record.date }}</td>
+                    <td>{{ moment(record.date).format('DD-MM-YYYY') }}</td>
+                    <!-- <td>{{ moment(record.date).format('L') }}</td> -->
                     <td>{{ record.done }}</td>
                     <td>{{ record.sent }}</td>
                     <td>{{ record.mistakes }}</td>
