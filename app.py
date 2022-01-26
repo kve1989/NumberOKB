@@ -1,8 +1,8 @@
-from flask import Flask, render_template, request, redirect, flash
+from flask import Flask, render_template, request, redirect, flash, session, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_moment import Moment
 
-from datetime import datetime
+from datetime import date, datetime
 
 from forms import *
 
@@ -37,10 +37,16 @@ def create():
     form = PCRform()
     return render_template('create.html', form=form)
 
-@app.route("/")
+@app.route("/", methods=["POST", "GET"])
 def home():
+    # today = date.today()
+    form = SearchForm()
     records = PCR.query.order_by(PCR.date).all()
-    return render_template('index.html', records=records)
+    # if request.method == "POST":
+    #     session['custom_date'] = request.form['date']
+    #     records = PCR.query.order_by(PCR.date).filter(PCR.date >= session['custom_date']).all()
+    #     return render_template('index.html', records=records, form=form, today=session['custom_date'])
+    return render_template('index.html', records=records, form=form)
 
 @app.route("/new", methods=['POST'])
 def new_record():
@@ -57,7 +63,7 @@ def new_record():
             db.session.add(record)
             db.session.commit()
             flash("Запись успешно добавлена!", 'success')
-            return redirect('/')
+            return redirect(url_for('home'))
         except:
             return "Ошибка при добавлении"
 
