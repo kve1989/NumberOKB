@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request, redirect, flash
 from flask_sqlalchemy import SQLAlchemy
+from flask_moment import Moment
+
 from datetime import datetime
 
 from forms import *
@@ -10,6 +12,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = '01f260718007c0bd2ef3e9005b84ab97'
 
 db = SQLAlchemy(app)
+moment = Moment(app)
 
 class PCR(db.Model):
     id = db.Column(db.Integer, primary_key=True)
