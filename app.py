@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, flash, session, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_moment import Moment
-
+from flask_migrate import Migrate
 from datetime import date, datetime
 
 from forms import *
@@ -10,6 +10,8 @@ app = Flask(__name__)
 app.config.from_object('config')
 db = SQLAlchemy(app)
 moment = Moment(app)
+migrate = Migrate(app, db)
+
 
 class PCR(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -23,7 +25,7 @@ class PCR(db.Model):
 
 @app.errorhandler(404)
 def page_not_found(e):
-    return render_template('404.html', e=e), 400
+    return render_template('404.html'), 400
 
 @app.errorhandler(500)
 def internal_server_template(e):
