@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    var alerts = document.querySelectorAll('.alert')
+    let alerts = document.querySelectorAll('.alert')
 
     alerts.forEach( alert => {
         if (alert) {
