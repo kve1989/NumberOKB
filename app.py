@@ -7,10 +7,7 @@ from datetime import date, datetime
 from forms import *
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SECRET_KEY'] = '01f260718007c0bd2ef3e9005b84ab97'
-
+app.config.from_object('config')
 db = SQLAlchemy(app)
 moment = Moment(app)
 
@@ -26,7 +23,7 @@ class PCR(db.Model):
 
 @app.errorhandler(404)
 def page_not_found(e):
-    return render_template('404.html'), 400
+    return render_template('404.html', e=e), 400
 
 @app.errorhandler(500)
 def internal_server_template(e):
@@ -55,7 +52,7 @@ def new_record():
     sent = request.form['sent']
     mistakes = request.form['mistakes']
 
-    form=PCRform()
+    form = PCRform()
 
     if form.validate_on_submit():
         record = PCR(date=date, done=done,sent=sent,mistakes=mistakes)
