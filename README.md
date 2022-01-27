@@ -16,6 +16,8 @@ Windows:
 
 `pip install -r requirements.txt`
 
-`>>> from app import db`
+`python db_create.py`
 
-`>>> db.create_all()`
+`flask db init`
+
+`flask db migrate -m 'First migrate'`
