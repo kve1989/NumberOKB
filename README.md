@@ -3,21 +3,21 @@
 Используется фреймфорк Flask
 
 Для хранения данных используется sqlite
-
-`python -m venv venv`
+```
+python -m venv venv
+````
 
 Linux:
-
-`source venv\bin\active`
-
+```bash
+source venv\bin\active
+```
 Windows:
+```cmd
+./venv/Scripts/activate
+````
 
-`./venv/Scripts/activate`
-
-`pip install -r requirements.txt`
-
-`python db_create.py`
-
-`flask db init`
-
-`flask db migrate -m 'First migrate'`
+```console
+pip install -r requirements.txt
+flask db init
+flask db migrate -m 'First migrate'
+```
