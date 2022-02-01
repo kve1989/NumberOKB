@@ -14,4 +14,4 @@ class MCEform(MyForm):
     assigned  = StringField('Назначено', validators=[DataRequired()])
 
 class SearchForm(FlaskForm):
-    date = DateField('Дата', validators=[DataRequired()])
+    date = DateField('Выбрать даты', validators=[DataRequired()])

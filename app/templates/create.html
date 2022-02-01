@@ -5,34 +5,35 @@
 {% block body %}
 <div class="container">
     <div class="card mt-3">
-        <div class="card-header">Изменение записи</div>
+        <div class="card-header">Добавление записи</div>
         <div class="card-body">
-            <form action="{{ url_for('update_record', id=record.id) }}" method="POST">
+            <form action="{{ url_for('new_record') }}" method="POST">
                 {{ form.csrf_token() }}
 
                 <div class="row">
                     <div class="col-6">
                         {{ form.date.label(class="form-label") }}
-                        {{ form.date(class="form-control", value=record.date) }}
+                        {{ form.date(class="form-control") }}
                     </div>
 
                     <div class="col-6">
                         {{ form.sent.label(class="form-label") }}
-                        {{ form.sent(class="form-control", value=record.sent) }}
+                        {{ form.sent(class="form-control") }}
                     </div>
                 </div>
                 <div class="row mb-2">
                     <div class="col-6">
                         {{ form.done.label(class="form-label") }}
-                        {{ form.done(class="form-control", value=record.done) }}
+                        {{ form.done(class="form-control") }}
                     </div>
 
                     <div class="col-6">
                         {{ form.mistakes.label(class="form-label") }}
-                        {{ form.mistakes(class="form-control", value=record.mistakes) }}
+                        {{ form.mistakes(class="form-control") }}
                     </div>
                 </div>
-                <button class="btn btn-primary" type="submit">Изменить</button>
+                <button class="btn btn-primary" type="submit"><i class="far fa-save me-1"></i>Создать</button>
+                <a class="btn btn-secondary" href="{{ url_for('home') }}">Отмена</a>
             </form>
         </div>
     </div>

@@ -1,27 +1,10 @@
-from flask import Flask, render_template, request, redirect, flash, session, url_for
-from flask_sqlalchemy import SQLAlchemy
-from flask_moment import Moment
-from flask_migrate import Migrate
-from datetime import date, datetime
+from flask import render_template, request, redirect, flash, session, url_for
 
-from forms import *
+from app import app, db
+from app.models import PCR
+from app.forms import PCRform,SearchForm
 
-app = Flask(__name__)
-app.config.from_object('config')
-db = SQLAlchemy(app)
-moment = Moment(app)
-migrate = Migrate(app, db)
-
-
-class PCR(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    date = db.Column(db.Date)
-    done = db.Column(db.Integer, nullable=False)
-    sent = db.Column(db.Integer, nullable=False)
-    mistakes = db.Column(db.Integer, nullable=False)
-
-    def __repr__(self):
-        return '<PCR %r>' % self.id
+from datetime import datetime
 
 @app.errorhandler(404)
 def page_not_found(e):
@@ -76,10 +59,10 @@ def delete_record(id):
         db.session.delete(record)
         db.session.commit()
         flash("Запись успешно удалена!", 'success')
-        return redirect('/')
     except:
-        flash("Запись успешно удалена!", 'error')
-        return redirect('/')
+        flash("Ошибка при удалении!", 'error')
+
+    return redirect(url_for('home'))
 
 @app.route("/<int:id>/edit")
 def edit_record(id):
@@ -101,11 +84,8 @@ def update_record(id):
         try:
             db.session.commit()
             flash("Запись успешно изменена!", 'success')
-            return redirect('/')
+            return redirect(url_for('home'))
         except:
             return "Ошибка при изменении"
 
     return render_template('edit.html', form=form)
-
-if __name__ == '__main__':
-    app.run(debug=True)
