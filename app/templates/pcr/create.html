@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %} ПЦР {% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="card mt-3">
+        <div class="card-header">Добавление записи</div>
+        <div class="card-body">
+            <form action="{{ url_for('new_record') }}" method="POST">
+
+                {% include "pcr/components/form.html" %}
+
+                <button class="btn btn-primary" type="submit"><i class="far fa-save me-1"></i>Создать</button>
+                <a class="btn btn-secondary" href="{{ url_for('pcr_index') }}">Отмена</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
