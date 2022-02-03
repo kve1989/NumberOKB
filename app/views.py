@@ -1,7 +1,7 @@
 from flask import render_template, request, redirect, flash, session, url_for
 from app import app, db
 from app.models import PCR
-from app.forms import PCRform,SearchForm
+from app.forms import PCRform, SearchForm
 from datetime import datetime
 
 @app.errorhandler(404)
@@ -11,7 +11,6 @@ def page_not_found(e):
 @app.errorhandler(500)
 def internal_server_template(e):
     return render_template('500.html'), 500
-
 
 @app.route("/")
 def home():
@@ -28,14 +27,13 @@ def pcr_index():
     #     return render_template('index.html', records=records, form=form, today=session['custom_date'])
     return render_template('pcr/index.html', records=records, form=form)
 
-
 @app.route("/pcr/create")
-def create():
+def page_pcr_create():
     form = PCRform()
     return render_template('pcr/create.html', form=form)
 
 @app.route("/pcr/new", methods=['POST'])
-def new_record():
+def pcr_new():
     date = datetime.strptime(request.form['date'], "%Y-%m-%d")
     done = request.form['done']
     sent = request.form['sent']
@@ -56,7 +54,7 @@ def new_record():
     return render_template('pcr/create.html', form=form)
 
 @app.route("/pcr/<int:id>/delete")
-def delete_record(id):
+def pcr_delete(id):
     record = PCR.query.get_or_404(id)
 
     try:
@@ -64,18 +62,18 @@ def delete_record(id):
         db.session.commit()
         flash("Запись успешно удалена!", 'success')
     except:
-        flash("Ошибка при удалении!", 'error')
+        flash("Ошибка при удалении!", 'danger')
 
     return redirect(url_for('pcr_index'))
 
 @app.route("/pcr/<int:id>/edit")
-def edit_record(id):
+def pcr_page_edit(id):
     form = PCRform()
     record = PCR.query.get_or_404(id)
     return render_template('pcr/edit.html', form=form, record=record)
 
 @app.route("/pcr/<int:id>/update", methods=['POST'])
-def update_record(id):
+def pcr_update(id):
     record = PCR.query.get_or_404(id)
     record.date = datetime.strptime(request.form['date'], "%Y-%m-%d")
     record.done = request.form['done']
@@ -89,6 +87,6 @@ def update_record(id):
             db.session.commit()
             flash("Запись успешно изменена!", 'success')
         except:
-            flash("Ошибка при изменении!", 'errorr')
+            flash("Ошибка при изменении!", 'danger')
 
     return redirect(url_for('pcr_index'))

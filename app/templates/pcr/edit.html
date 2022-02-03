@@ -7,7 +7,7 @@
     <div class="card mt-3">
         <div class="card-header">Изменение записи</div>
         <div class="card-body">
-            <form action="{{ url_for('update_record', id=record.id) }}" method="POST">
+            <form action="{{ url_for('pcr_update', id=record.id) }}" method="POST">
 
                 {% include 'pcr/components/form.html' %}
 
