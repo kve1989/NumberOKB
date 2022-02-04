@@ -2,7 +2,7 @@ from flask import render_template, request, redirect, flash, session, url_for
 from app import app, db
 from app.models import PCR
 from app.forms import PCRform, SearchForm
-from datetime import datetime
+from datetime import datetime, date
 
 @app.errorhandler(404)
 def page_not_found(e):
@@ -12,9 +12,19 @@ def page_not_found(e):
 def internal_server_template(e):
     return render_template('500.html'), 500
 
-@app.route("/")
+@app.route("/", methods=["GET", "POST"])
 def home():
-    return render_template('index.html')
+    filter_date = date.today()
+
+    form = SearchForm()
+
+    if form.date.data:
+        filter_date = form.date.data
+        session['date'] = form.date.data
+
+    pcr_all = PCR.query.filter(PCR.date==filter_date).all()
+
+    return render_template('index.html', pcr_all=pcr_all, form=form, date=filter_date)
 
 @app.route("/pcr", methods=["POST", "GET"])
 def pcr_index():

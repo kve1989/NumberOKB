@@ -4,6 +4,65 @@
 
 {% block body %}
 
-    <h1>Главная страница</h1>
+
+<div class="container">
+    <button class="btn btn-info" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false"
+        aria-controls="collapseOne"><i class="far fa-filter"></i></button>
+
+    <div class="accordion accordion-flush mt-2 mb-2">
+        <div class="accordion-item">
+            <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
+                data-bs-parent="#accordionExample">
+                <div class="card">
+                    <div class="card-body">
+                        <form class="" action="/" method="post">
+                            {{ form.csrf_token() }}
+                            <div class="row mb-2">
+                                <div class="col-2 ">
+                                    {{ form.date(class="form-control") }}
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <button class="btn btn-success text-white" type="submit"><i
+                                        class="far fa-filter me-1"></i>Отобрать</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-6">
+            <div class="card">
+                <div class="card-header">
+                    <em>ПЦР</em> за <strong>{{ moment(date).format('DD.MM.YYYY') }}</strong>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <!-- <th class="col"><i class="far fa-calendar-alt me-1"></i> Дата</th> -->
+                                <th class="col">Выполнено</th>
+                                <th class="col">Отправлено</th>
+                                <th class="col">Ошибки</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="bg-warning">
+                                <!-- <td>Итого:</td> -->
+                                <td>{{ pcr_all|sum(attribute="done") }}</td>
+                                <td>{{ pcr_all|sum(attribute="sent") }}</td>
+                                <td>{{ pcr_all|sum(attribute="mistakes") }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
 
 {% endblock %}
