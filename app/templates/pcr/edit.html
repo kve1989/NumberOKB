@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% set active_page = 'pcr' %}
 
 {% block title %} ПЦР {% endblock %}
 
@@ -12,7 +13,7 @@
                 {% include 'pcr/components/form.html' %}
 
                 <button class="btn btn-primary" type="submit"><i class="far fa-save me-1"></i>Сохранить</button>
-                <a class="btn btn-secondary" href="{{ url_for('pcr_index') }}">Отмена</a>
+                <a class="btn btn-secondary" href="{{ url_for('page_pcr_index') }}">Отмена</a>
             </form>
         </div>
     </div>

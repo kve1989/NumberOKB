@@ -1,10 +1,12 @@
 {% extends 'base.html' %}
-
-{% block title %} ПЦР {% endblock %}
+{% set active_page = 'pcr' %}
+{% block title %} {{ title }} {% endblock %}
 
 {% block body %}
 
 <div class="container">
+    <h1 class="mb-3">Данные по {{ title }}</h1>
+
     {% with messages = get_flashed_messages(with_categories=True) %}
         {% if messages %}
             {% for category, message in messages %}
@@ -17,7 +19,7 @@
     {% endwith %}
 
     <div class="">
-        <a class="btn btn-warning" aria-current="page" href="{{url_for('page_pcr_create')}}"><i class="far fa-plus"></i></a>
+        <a class="btn btn-warning" aria-current="page" href="{{ url_for('page_pcr_create') }}"><i class="far fa-plus"></i></a>
         <button class="btn btn-info" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
             aria-expanded="false" aria-controls="collapseOne"><i class="far fa-filter"></i></button>
     </div>

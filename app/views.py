@@ -23,24 +23,28 @@ def home():
         session['date'] = form.date.data
 
     pcr_all = PCR.query.filter(PCR.date==filter_date).all()
-
     return render_template('index.html', pcr_all=pcr_all, form=form, date=filter_date)
 
 @app.route("/pcr", methods=["POST", "GET"])
-def pcr_index():
-    # today = date.today()
+def page_pcr_index():
     form = SearchForm()
     records = PCR.query.order_by(PCR.date).all()
     # if request.method == "POST":
     #     session['custom_date'] = request.form['date']
     #     records = PCR.query.order_by(PCR.date).filter(PCR.date >= session['custom_date']).all()
     #     return render_template('index.html', records=records, form=form, today=session['custom_date'])
-    return render_template('pcr/index.html', records=records, form=form)
+    return render_template('pcr/index.html', records=records, form=form, title="ПЦР")
 
 @app.route("/pcr/create")
 def page_pcr_create():
     form = PCRform()
     return render_template('pcr/create.html', form=form)
+
+@app.route("/pcr/<int:id>/edit")
+def pcr_page_edit(id):
+    form = PCRform()
+    record = PCR.query.get_or_404(id)
+    return render_template('pcr/edit.html', form=form, record=record)
 
 @app.route("/pcr/new", methods=['POST'])
 def pcr_new():
@@ -57,30 +61,12 @@ def pcr_new():
             db.session.add(record)
             db.session.commit()
             flash("Запись успешно добавлена!", 'success')
-            return redirect(url_for('pcr_index'))
         except:
-            return "Ошибка при добавлении"
+            flash("Ошибка при добавлении", 'danger')
+
+        return redirect(url_for('page_pcr_index'))
 
     return render_template('pcr/create.html', form=form)
-
-@app.route("/pcr/<int:id>/delete")
-def pcr_delete(id):
-    record = PCR.query.get_or_404(id)
-
-    try:
-        db.session.delete(record)
-        db.session.commit()
-        flash("Запись успешно удалена!", 'success')
-    except:
-        flash("Ошибка при удалении!", 'danger')
-
-    return redirect(url_for('pcr_index'))
-
-@app.route("/pcr/<int:id>/edit")
-def pcr_page_edit(id):
-    form = PCRform()
-    record = PCR.query.get_or_404(id)
-    return render_template('pcr/edit.html', form=form, record=record)
 
 @app.route("/pcr/<int:id>/update", methods=['POST'])
 def pcr_update(id):
@@ -99,4 +85,17 @@ def pcr_update(id):
         except:
             flash("Ошибка при изменении!", 'danger')
 
-    return redirect(url_for('pcr_index'))
+    return redirect(url_for('page_pcr_index'))
+
+@app.route("/pcr/<int:id>/delete")
+def pcr_delete(id):
+    record = PCR.query.get_or_404(id)
+
+    try:
+        db.session.delete(record)
+        db.session.commit()
+        flash("Запись успешно удалена!", 'success')
+    except:
+        flash("Ошибка при удалении!", 'danger')
+
+    return redirect(url_for('page_pcr_index'))
