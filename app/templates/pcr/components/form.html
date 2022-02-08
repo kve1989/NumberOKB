@@ -1,5 +1,14 @@
 {{ form.csrf_token() }}
-<div class="row">
+<div class="row mb-2">
+    <div class="col">
+        <select class="form-select" name="table" id="">
+            {% for table in tables %}
+                <option value="{{ table[0] }}" {{ 'selected' if session['table'] in table[0] else '' }}>{{ table[1] }}</option>
+            {% endfor %}
+        </select>
+    </div>
+</div>
+<div class="row mb-2">
     <div class="col-6">
         {{ form.date.label(class="form-label") }}
         {{ form.date(class="form-control", value=record.date if record) }}
