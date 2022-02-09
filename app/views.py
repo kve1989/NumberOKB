@@ -17,30 +17,46 @@ def internal_server_template(e):
 
 @app.route("/", methods=["GET", "POST"])
 def home():
+    """ Создаем переменную с изменяемой датой, по умолчанию стоит дата на сегодняшний день """
     filter_date = date.today()
+
+    """ Складываем все цифры и название таблицы """
+    all_data = []
 
     form = SearchForm()
 
     if form.date.data:
+        """ Сохраняем дату выбранную пользователем в объявленную переменную и дополнительно в сессию """
         filter_date = form.date.data
         session['date'] = form.date.data
 
-    pcr_all = PCR.query.filter(PCR.date == filter_date).all()
-    return render_template('index.html', pcr_all=pcr_all, form=form, date=filter_date)
+    for table in tables:
+        """ Перебираем список с таблицами для выборки цифр """
+        all_data += [
+            {
+                'name': table[1],
+                'data': eval(table[0]).query.filter(eval(table[0]).date == filter_date).all()
+            }
+        ]
+
+    return render_template('index.html', form=form, date=filter_date, all_data=all_data)
 
 
 @app.route("/pcr", methods=["POST", "GET"])
 def page_pcr_index():
+
     form = SearchForm()
 
-    # records = PCR.query.order_by(PCR.date).all()
     records = None
 
     if form.table.data:
+        """ В сессию складываем имя таблицы, которую пользователь выбрал на странице"""
         session['table'] = form.table.data
         records = eval(form.table.data).query.order_by(eval(form.table.data).date).all()
+    elif form.table.data is None:
+        records = eval(session['table']).query.order_by(eval(session['table']).date).all()
 
-    return render_template('pcr/index.html', records=records, form=form, title="ПЦР")
+    return render_template('pcr/index.html', records=records, form=form, tables=tables)
 
 
 @app.route("/pcr/create")
@@ -66,7 +82,6 @@ def pcr_new():
     form = PCRform()
 
     if form.validate_on_submit():
-        # record = PCR(date=date, done=done, sent=sent, mistakes=mistakes)
         record = eval(form.table.data)(date=date, done=done, sent=sent, mistakes=mistakes)
         try:
             db.session.add(record)
@@ -82,24 +97,16 @@ def pcr_new():
 
 @app.route("/pcr/<int:id>/update", methods=['POST'])
 def pcr_update(id):
-    form = PCRform()
-
     record = eval(session['table']).query.get_or_404(id)
     record.date = datetime.strptime(request.form['date'], "%Y-%m-%d")
     record.done = request.form['done']
     record.sent = request.form['sent']
     record.mistakes = request.form['mistakes']
 
+    form = PCRform()
+
     if form.validate_on_submit():
         try:
-            if form.table.data != session['table']:
-                db.session.remove(record)
-                db.session.commit()
-                record = eval(form.table.date)(date=datetime.strptime(form.date.data, "%Y-%m-%d"),
-                                               done=form.done.data,
-                                               sent=form.sent.data,
-                                               mistakes=form.mistakes.data)
-                db.session.add(record)
             db.session.commit()
             flash("Запись успешно изменена!", 'success')
         except:
