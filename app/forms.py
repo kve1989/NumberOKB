@@ -3,7 +3,6 @@ from wtforms import StringField, DateField, IntegerField, SelectField
 from wtforms.validators import DataRequired
 
 tables = [
-    ('', 'Выберете таблицу...'),
     ('ProtocConsult', '1. Протокол консультации'),
     ('ProfMedicalExam', '2. Контрольная карта диспансеризации'),
     ('LabResearch', '3. Лабораторные исследования'),
@@ -28,7 +27,7 @@ tables = [
     ('DeathInform', '22. Сведения о смерти'),
     ('InformPerinatalDeath', '23. Сведения о перинатальной смерти'),
     ('ELNOpen', '24. ЭЛН открытых'),
-    ('ELNClose','25. ЭЛН открытых')
+    ('ELNClose', '25. ЭЛН закрытых')
 ]
 
 
