@@ -5,7 +5,7 @@
 {% block body %}
 
     <div class="container">
-        <h1 class="mb-3">Данные по {{ title }}</h1>
+        <h1 class="mb-3">Данные по </h1>
 
         {% with messages = get_flashed_messages(with_categories=True) %}
             {% if messages %}
@@ -21,7 +21,8 @@
 
         <div class="">
             <a class="btn btn-warning" aria-current="page" href="{{ url_for('page_pcr_create') }}">
-                <i class="far fa-plus"></i></a>
+                <i class="far fa-plus"></i>
+            </a>
         </div>
 
         <div class="card mt-2 mb-2">
@@ -30,8 +31,11 @@
                     {{ form.csrf_token() }}
                     <div class="row mb-2">
                         <div class="col">
-                            {{ form.table.label(class="form-label") }}
-                            {{ form.table(class="form-select") }}
+                            <select class="form-select" name="table" id="">
+                                {% for table in tables %}
+                                <option value="{{ table[0] }}" {{ 'selected' if session['table'] in table[0] else '' }}>{{ table[1] }}</option>
+                                {% endfor %}
+                            </select>
                         </div>
                     </div>
                 </form>
