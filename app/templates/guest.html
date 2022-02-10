@@ -12,10 +12,6 @@
         integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
 </head>
 <body>
-    <nav class="navbar bg-dark text-light p-2">
-        <a href="{{ url_for('page_pcr_index') }}" class="btn btn-primary">Вход</a>
-    </nav>
-
     <main>
         <article class="p-3 position-relative">
             {% block body %}{% endblock %}
@@ -24,11 +20,11 @@
 
 
 
-{% block scripts %}
-    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    {{ moment.include_moment() }}
-{% endblock %}
+    {% block scripts %}
+        <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        {{ moment.include_moment() }}
+    {% endblock %}
 </body>
 </html>
