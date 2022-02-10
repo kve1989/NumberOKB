@@ -249,7 +249,7 @@ class EpicrisisStage(db.Model):
 
 
 # 20. Вакцинация (вся)
-class Vaccination(db.Model):
+class VaccinationAll(db.Model):
     __tablename__ = '20.Vaccination(all)'
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.Date)
@@ -258,12 +258,23 @@ class Vaccination(db.Model):
     mistakes = db.Column(db.Integer)
 
     def __repr__(self):
-        return '<Vaccination %r>' % self.id
+        return '<VaccinationAll %r>' % self.id
 
+# 21. Вакцинация (Covid)
+class VaccinationCovid(db.Model):
+    __tablename__ = '21.Vaccination(Covid)'
+    id = db.Column(db.Integer, primary_key=True)
+    date = db.Column(db.Date)
+    done = db.Column(db.Integer)
+    sent = db.Column(db.Integer)
+    mistakes = db.Column(db.Integer)
 
-# 21. Вызов врача на дом
+    def __repr__(self):
+        return '<VaccinationCovid %r>' % self.id
+
+# 22. Вызов врача на дом
 class CallDocAtHome(db.Model):
-    __tablename__ = '21.CallDocAtHome'
+    __tablename__ = '22.CallDocAtHome'
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.Date)
     done = db.Column(db.Integer)
@@ -274,9 +285,9 @@ class CallDocAtHome(db.Model):
         return '<CallDocAtHome %r>' % self.id
 
 
-# 22. Сведения о смерти
+# 23. Сведения о смерти
 class DeathInform(db.Model):
-    __tablename__ = '22.DeathInform'
+    __tablename__ = '23.DeathInform'
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.Date)
     done = db.Column(db.Integer)
@@ -287,9 +298,9 @@ class DeathInform(db.Model):
         return '<DeathInform %r>' % self.id
 
 
-# 23. Сведения о перинатальной смерти
+# 24. Сведения о перинатальной смерти
 class InformPerinatalDeath(db.Model):
-    __tablename__ = '23.InformPerinatalDeath'
+    __tablename__ = '24.InformPerinatalDeath'
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.Date)
     done = db.Column(db.Integer)
@@ -300,9 +311,9 @@ class InformPerinatalDeath(db.Model):
         return '<InformPerinatalDeath %r>' % self.id
 
 
-# 24. ЭЛН открытых
+# 25. ЭЛН открытых
 class ELNOpen(db.Model):
-    __tablename__ = '24.ELN(open)'
+    __tablename__ = '25.ELN(open)'
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.Date)
     done = db.Column(db.Integer)
@@ -313,9 +324,9 @@ class ELNOpen(db.Model):
         return '<ELNOpen %r>' % self.id
 
 
-# 25. ЭЛН открытых
+# 26. ЭЛН открытых
 class ELNClose(db.Model):
-    __tablename__ = '25.ELN(close)'
+    __tablename__ = '26.ELN(close)'
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.Date)
     done = db.Column(db.Integer)

@@ -22,12 +22,13 @@ tables = [
     ('EpicrisisPreoperative', '17. Эпикриз предоперационный'),
     ('EpicrisisDremoval', '18. Эпикриз снятия с Д учета'),
     ('EpicrisisStage', '19. Эпикриз этапный'),
-    ('Vaccination', '20. Вакцинация (вся)'),
-    ('CallDocAtHome', '21. Вызов врача на дом'),
-    ('DeathInform', '22. Сведения о смерти'),
-    ('InformPerinatalDeath', '23. Сведения о перинатальной смерти'),
-    ('ELNOpen', '24. ЭЛН открытых'),
-    ('ELNClose', '25. ЭЛН закрытых')
+    ('VaccinationAll', '20. Вакцинация (вся)'),
+    ('VaccinationCovid', '21. Вакцинация (Covid)'),
+    ('CallDocAtHome', '22. Вызов врача на дом'),
+    ('DeathInform', '23. Сведения о смерти'),
+    ('InformPerinatalDeath', '24. Сведения о перинатальной смерти'),
+    ('ELNOpen', '25. ЭЛН открытых'),
+    ('ELNClose', '26. ЭЛН закрытых')
 ]
 
 
