@@ -10,7 +10,4 @@ db = SQLAlchemy(app)
 moment = Moment(app)
 migrate = Migrate(app, db)
 
-main = Blueprint('main', __name__)
-app.register_blueprint(main)
-
-from app import views, models
+from app import views, errors, models
