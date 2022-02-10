@@ -2,17 +2,18 @@ from flask import render_template, request, redirect, flash, session, url_for
 from app import app, db
 from app.models import *
 from app.forms import PCRform, SearchForm, tables
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 
 
 @app.route("/", methods=["GET", "POST"])
 def home():
-    """ Создаем переменную с изменяемой датой, по умолчанию стоит дата на сегодняшний день """
-    filter_date = date.today()
+    """ Создаем переменную с изменяемой датой, по умолчанию стоит дата за вчерашний день """
+    filter_date = date.today() - timedelta(days=1)
 
     """ Складываем все цифры и название таблицы """
     all_data = []
 
+    """ Создаем форму поиска """
     form = SearchForm()
 
     if form.date.data:
@@ -35,17 +36,24 @@ def home():
 @app.route("/pcr", methods=["POST", "GET"])
 def page_pcr_index():
 
+    """ Форма поиска """
     form = SearchForm()
 
     records = None
 
+    """ Таблица выбранная пользователем """
+    selected_table = None
+
     if form.table.data:
-        """ В сессию складываем имя таблицы, которую пользователь выбрал на странице"""
+        """ В сессию и переменную складываем имя таблицы, которую пользователь выбрал на странице"""
+        selected_table = form.table.data
         session['table'] = form.table.data
-        records = eval(form.table.data).query.order_by(eval(form.table.data).date).all()
     elif form.table.data is None:
+        """ Если таблица не выбрана по умолчанию выставим первую таблицу в списке """
         session['table'] = tables[0][0]
-        records = eval(session['table']).query.order_by(eval(session['table']).date).all()
+        selected_table = tables[0][0]
+
+    records = eval(selected_table).query.order_by(eval(selected_table).date).all()
 
     return render_template('pcr/index.html', records=records, form=form, tables=tables)
 
