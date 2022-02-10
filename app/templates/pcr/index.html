@@ -1,11 +1,16 @@
 {% extends 'base.html' %}
+{% block title %} Таблица {% endblock %}
 {% set active_page = 'pcr' %}
-{% block title %} {{ title }} {% endblock %}
 
 {% block body %}
 
     <div class="container">
-        <h1 class="mb-3">Данные по </h1>
+
+        {% for table in tables %}
+            {% if request.form.data or session['table'] in table %}
+                <h1>Данные по {{ table[1]  }}</h1>
+            {%endif%}
+        {% endfor %}
 
         {% with messages = get_flashed_messages(with_categories=True) %}
             {% if messages %}
@@ -61,8 +66,6 @@
                         <td>{{ record.sent }}</td>
                         <td>{{ record.mistakes }}</td>
                         <td>
-                            <a class="link" href="{{ url_for('pcr_page_edit', id=record.id) }}">
-                                <i class="fas fa-pencil-alt me-1"></i>Исправить</a>
                             <a class="link text-danger" href="{{ url_for('pcr_delete', id=record.id) }}">
                                 <i class="fas fa-trash-alt me-1"></i>Удалить</a>
                         </td>
