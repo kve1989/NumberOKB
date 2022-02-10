@@ -5,16 +5,6 @@ from app.forms import PCRform, SearchForm, tables
 from datetime import datetime, date
 
 
-@app.errorhandler(404)
-def page_not_found(e):
-    return render_template('404.html'), 400
-
-
-@app.errorhandler(500)
-def internal_server_template(e):
-    return render_template('500.html'), 500
-
-
 @app.route("/", methods=["GET", "POST"])
 def home():
     """ Создаем переменную с изменяемой датой, по умолчанию стоит дата на сегодняшний день """
@@ -54,6 +44,7 @@ def page_pcr_index():
         session['table'] = form.table.data
         records = eval(form.table.data).query.order_by(eval(form.table.data).date).all()
     elif form.table.data is None:
+        session['table'] = tables[0][0]
         records = eval(session['table']).query.order_by(eval(session['table']).date).all()
 
     return render_template('pcr/index.html', records=records, form=form, tables=tables)
