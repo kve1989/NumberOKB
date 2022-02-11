@@ -1,14 +1,15 @@
 from flask import render_template, request, redirect, flash, session, url_for
 from app import app, db
 from app.models import *
-from app.forms import PCRform, SearchForm, tables
+from app.forms import Form, SearchForm, tables
 from datetime import datetime, date, timedelta
 
+default_date = date.today() - timedelta(days=1)
 
 @app.route("/", methods=["GET", "POST"])
 def home():
     """ Создаем переменную с изменяемой датой, по умолчанию стоит дата за вчерашний день """
-    filter_date = date.today() - timedelta(days=1)
+    filter_date = default_date
 
     """ Складываем все цифры и название таблицы """
     all_data = []
@@ -31,7 +32,6 @@ def home():
         ]
 
     return render_template('index.html', form=form, date=filter_date, all_data=all_data)
-
 
 @app.route("/pcr", methods=["POST", "GET"])
 def page_pcr_index():
@@ -60,13 +60,13 @@ def page_pcr_index():
 
 @app.route("/pcr/create")
 def page_pcr_create():
-    form = PCRform()
-    return render_template('pcr/create.html', form=form, tables=tables)
+    form = Form()
+    return render_template('pcr/create.html ', form=form, tables=tables, date=default_date)
 
 
 @app.route("/pcr/<int:id>/edit")
 def pcr_page_edit(id):
-    form = PCRform()
+    form = Form()
     record = eval(session['table']).query.get_or_404(id)
     return render_template('pcr/edit.html', form=form, record=record, tables=tables)
 
@@ -74,22 +74,25 @@ def pcr_page_edit(id):
 @app.route("/pcr/new", methods=['POST'])
 def pcr_new():
     date = datetime.strptime(request.form['date'], "%Y-%m-%d")
-    done = request.form['done']
-    sent = request.form['sent']
-    mistakes = request.form['mistakes']
 
-    form = PCRform()
+    form = Form()
 
     if form.validate_on_submit():
-        record = eval(form.table.data)(date=date, done=done, sent=sent, mistakes=mistakes)
+    # if form.is_submitted():
+
+        record = eval(form.table.data)(date=date, done=form.done.data, sent=form.sent.data, mistakes=form.mistakes.data)
+
         try:
             db.session.add(record)
             db.session.commit()
             flash("Запись успешно добавлена!", 'success')
         except:
             flash("Ошибка при добавлении!", 'danger')
-
         return redirect(url_for('page_pcr_index'))
+
+    if form.errors != {}:
+        for err_msg in form.errors.values():
+            flash(err_msg, 'danger')
 
     return render_template('pcr/create.html', form=form)
 
@@ -102,7 +105,7 @@ def pcr_update(id):
     record.sent = request.form['sent']
     record.mistakes = request.form['mistakes']
 
-    form = PCRform()
+    form = Form()
 
     if form.validate_on_submit():
         try:
