@@ -6,6 +6,7 @@ from datetime import datetime, date, timedelta
 
 default_date = date.today() - timedelta(days=1)
 
+
 @app.route("/", methods=["GET", "POST"])
 def home():
     """ Создаем переменную с изменяемой датой, по умолчанию стоит дата за вчерашний день """
@@ -33,9 +34,9 @@ def home():
 
     return render_template('index.html', form=form, date=filter_date, all_data=all_data)
 
+
 @app.route("/pcr", methods=["POST", "GET"])
 def page_pcr_index():
-
     """ Форма поиска """
     form = SearchForm()
 
@@ -53,7 +54,8 @@ def page_pcr_index():
         session['table'] = tables[0][0]
         selected_table = tables[0][0]
 
-    records = eval(selected_table).query.order_by(eval(selected_table).date).all()
+    records = eval(selected_table).query.order_by(
+        eval(selected_table).date).all()
 
     return render_template('pcr/index.html', records=records, form=form, tables=tables)
 
@@ -77,10 +79,9 @@ def pcr_new():
 
     form = Form()
 
-    if form.validate_on_submit():
-    # if form.is_submitted():
-
-        record = eval(form.table.data)(date=date, done=form.done.data, sent=form.sent.data, mistakes=form.mistakes.data)
+    if form.is_submitted():
+        record = eval(form.table.data)(date=date, done=form.done.data,
+                                       sent=form.sent.data, mistakes=form.mistakes.data)
 
         try:
             db.session.add(record)
@@ -107,12 +108,16 @@ def pcr_update(id):
 
     form = Form()
 
-    if form.validate_on_submit():
+    if form.is_submitted():
         try:
             db.session.commit()
             flash("Запись успешно изменена!", 'success')
         except:
             flash("Ошибка при изменении!", 'danger')
+
+    if form.errors != {}:
+        for err_msg in form.errors.values():
+            flash(err_msg, 'danger')
 
     return redirect(url_for('page_pcr_index'))
 
