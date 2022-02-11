@@ -3,7 +3,7 @@
 <div class="row mb-2">
     <div class="col-6">
         {{ form.date.label(class="form-label") }}
-        {{ form.date(class="form-control", value=record.date if record) }}
+        {{ form.date(class="form-control", value=record.date if record else date) }}
     </div>
 
     <div class="col-6">
