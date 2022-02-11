@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% block title %} Таблица {% endblock %}
-{% set active_page = 'pcr' %}
 
 {% block body %}
 
@@ -66,6 +65,8 @@
                         <td>{{ record.sent }}</td>
                         <td>{{ record.mistakes }}</td>
                         <td>
+                            <a class="link text-primary" href="{{ url_for('pcr_page_edit', id=record.id) }}">
+                            <i class="fas fa-pencil-alt me-1"></i>Изменить</a>
                             <a class="link text-danger" href="{{ url_for('pcr_delete', id=record.id) }}">
                                 <i class="fas fa-trash-alt me-1"></i>Удалить</a>
                         </td>
