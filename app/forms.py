@@ -32,17 +32,13 @@ tables = [
 ]
 
 
-class MyForm(FlaskForm):
+class Form(FlaskForm):
     # Определяем форму с полями и берем за основу
     date = DateField('Дата', validators=[DataRequired()])
-    sent = IntegerField('Отправлено', validators=[DataRequired()])
-    mistakes = IntegerField('Ошибки', validators=[DataRequired()])
+    sent = IntegerField('Отправлено')
+    mistakes = IntegerField('Ошибки')
+    done = IntegerField('Выполнено')
     table = SelectField('Таблица', choices=tables, validators=[DataRequired()])
-
-
-class PCRform(MyForm):
-    # Форма для ПЦР
-    done = IntegerField('Выполнено', validators=[DataRequired()])
 
 
 class SearchForm(FlaskForm):
