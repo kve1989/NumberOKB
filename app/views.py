@@ -63,7 +63,7 @@ def page_pcr_index():
 @app.route("/pcr/create")
 def page_pcr_create():
     form = Form()
-    return render_template('pcr/create.html ', form=form, tables=tables, date=default_date)
+    return render_template('pcr/create.html', form=form, tables=tables, date=default_date)
 
 
 @app.route("/pcr/<int:id>/edit")
