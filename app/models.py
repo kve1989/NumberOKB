@@ -1,3 +1,4 @@
+from email.policy import default
 from app import db
 
 
@@ -335,3 +336,15 @@ class ELNClose(db.Model):
 
     def __repr__(self):
         return '<ELNClose %r>' % self.id
+
+
+# 27. Таблица в которой содержаться все имена таблиц в БД
+class TablesInCurrentBase(db.Model):
+    __tablename__ = 'TablesInCurrentBase'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50))
+    description = db.Column(db.String(100))
+    status = db.Column(db.Boolean, default=True)
+
+    def __repr__(self):
+        return '<TablesInCurrentBase %r>' % self.id

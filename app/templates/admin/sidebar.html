@@ -1,0 +1,20 @@
+<aside class="position-fixed d-block top-0 bottom-0 overflow-auto" style="width: 280px">
+    <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark h-100" >
+        <a class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none"
+            href="{{ url_for('admin.index') }}">
+            <img class="me-2" width="50" src="{{ url_for('static', filename='img/logo/logo_small.png') }}"
+                alt="Логотип ОКБ">
+            <span class="fs-4">AdminPanel</span>
+        </a>
+        <hr>
+        <ul class="nav nav-pills flex-column mb-auto">
+            <li class="nav-item">
+                <a href="{{ url_for('admin.tables') }}" class="nav-link text-white {{ 'active' if active_page == 'tables' }}" aria-current="page">
+                    <i class="fal fa-table me-2"></i>
+                    Таблицы
+                </a>
+            </li>
+        </ul>
+        <hr>
+    </div>
+</aside>

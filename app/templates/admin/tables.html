@@ -1,0 +1,45 @@
+{% extends 'layouts/admin.html' %}
+{% set active_page = 'tables' %}
+{% block title %} Dashboard {% endblock %}
+
+{% block sidebar %}
+    {% include 'admin/sidebar.html' %}
+{% endblock %}
+
+{% block body %}
+<div class="table-responsive">
+    <table class="table bg-white table-bordered ">
+        <tr>
+            <td colspan=5 class="fs-4">Таблицы</td>
+        </tr>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Описание</th>
+            <th scope="col">Имя таблицы</th>
+            <th scope="col">Статус</th>
+            <th scope="col">Действия</th>
+        </tr>
+        {% for table in tables %}
+            <tr>
+                <th scope="row">{{ table.id }}</th>
+                <td>{{ table.description }}</td>
+                <td>{{ table.name }}</td>
+                <td>
+                    {% if table.status %}
+                        <span class="badge rounded-pill alert-success">Активна</span>
+                    {% else %}
+                        <span class="badge rounded-pill alert-danger">Не активна</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if table.status %}
+                        <a href="{{ url_for('admin.change_status', id=table.id, status=0) }}">Изменить статус</a>
+                    {% else %}
+                        <a href="{{ url_for('admin.change_status', id=table.id, status=1) }}">Изменить статус</a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}
