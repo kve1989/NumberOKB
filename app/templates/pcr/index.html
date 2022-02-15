@@ -7,7 +7,7 @@
 
         {% for table in tables %}
             {% if request.form.data or session['table'] in table %}
-                <h1>Данные по {{ table[1]  }}</h1>
+                <h1>Данные по <u>{{ table[1] }}</u></h1>
             {%endif%}
         {% endfor %}
 
