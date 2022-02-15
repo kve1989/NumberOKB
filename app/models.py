@@ -335,3 +335,15 @@ class ELNClose(db.Model):
 
     def __repr__(self):
         return '<ELNClose %r>' % self.id
+
+# 27. Лабораторные исследования (ПЦР)
+class LabResearchPCR(db.Model):
+    __tablename__ = '27.LabResearchPCR'
+    id = db.Column(db.Integer, primary_key=True)
+    date = db.Column(db.Date)
+    done = db.Column(db.Integer, nullable=True, default=0)
+    sent = db.Column(db.Integer, nullable=True, default=0)
+    mistakes = db.Column(db.Integer, nullable=True, default=0)
+
+    def __repr__(self):
+        return '<LabResearchPCR %r>' % self.id
