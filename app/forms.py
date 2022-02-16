@@ -6,7 +6,7 @@ tables = [
     # ('ProtocConsult', 'Протокол консультации'),
     ('ProfMedicalExam', 'Контрольная карта диспансеризации'),
     ('LabResearch',  'Лабораторные исследования'),
-    ('LabResearchPCR', 'Лабораторные исследования (ПЦР)'),
+    ('LabResPCR', 'Лабораторные исследования (ПЦР)'),
     ('MedCertBirth', 'Медицинские свидетельства о рождении'),
     ('DirectionOnMCE', 'Направление на МСЭ'),
     ('DirectToHospRehabExamCons', 'Направление на госпитализацию, восстановительное лечение, обследование, консультацию'),
@@ -45,4 +45,5 @@ class Form(FlaskForm):
 class SearchForm(FlaskForm):
     # Форма для поиска
     table = SelectField('Таблица', choices=tables, validators=[DataRequired()])
-    date = DateField('Выбрать даты', validators=[DataRequired()])
+    date = DateField('Задать дату', validators=[DataRequired()])
+    date_end = DateField('Задать конечную дату')
