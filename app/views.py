@@ -12,6 +12,9 @@ def home():
     """ Создаем переменную с изменяемой датой, по умолчанию стоит дата за вчерашний день """
     filter_date = default_date
 
+    """ Складываем конечную дату """
+    end_date = ''
+
     """ Складываем все цифры и название таблицы """
     all_data = []
 
@@ -25,14 +28,21 @@ def home():
 
     for table in tables:
         """ Перебираем список с таблицами для выборки цифр """
+        end_date = form.date_end.data
+
+        querySelectAllDataFromAllTables = eval(table[0]).query.filter(eval(table[0]).date == filter_date).all()
+
+        if form.date_end.data is not None:
+            querySelectAllDataFromAllTables = eval(table[0]).query.filter(eval(table[0]).date.between(filter_date, end_date)).all()
+
         all_data += [
             {
                 'name': table[1],
-                'data': eval(table[0]).query.filter(eval(table[0]).date == filter_date).all()
+                'data': querySelectAllDataFromAllTables
             }
         ]
 
-    return render_template('index.html', form=form, date=filter_date, all_data=all_data)
+    return render_template('index.html', form=form, date=filter_date, end_date=end_date, all_data=all_data)
 
 
 @app.route("/pcr", methods=["POST", "GET"])
@@ -49,13 +59,13 @@ def page_pcr_index():
         """ В сессию и переменную складываем имя таблицы, которую пользователь выбрал на странице"""
         selected_table = form.table.data
         session['table'] = form.table.data
+
     elif form.table.data is None:
         """ Если таблица не выбрана по умолчанию выставим первую таблицу в списке """
         session['table'] = tables[0][0]
         selected_table = tables[0][0]
 
-    records = eval(selected_table).query.order_by(
-        eval(selected_table).date).all()
+    records = eval(selected_table).query.order_by(eval(selected_table).date).all()
 
     return render_template('pcr/index.html', records=records, form=form, tables=tables)
 
