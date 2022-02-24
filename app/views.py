@@ -9,17 +9,19 @@ default_date = date.today() - timedelta(days=1)
 
 @app.route("/", methods=["GET", "POST"])
 def home():
+    """ Создаем форму поиска """
+    form = SearchForm()
+
     """ Создаем переменную с изменяемой датой, по умолчанию стоит дата за вчерашний день """
     filter_date = default_date
+    form.date.data = default_date
+    form.date_end.data = default_date
 
     """ Складываем конечную дату """
     end_date = ''
 
     """ Складываем все цифры и название таблицы """
     all_data = []
-
-    """ Создаем форму поиска """
-    form = SearchForm()
 
     if form.date.data:
         """ Сохраняем дату выбранную пользователем в объявленную переменную и дополнительно в сессию """
