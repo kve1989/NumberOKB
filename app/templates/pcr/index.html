@@ -58,7 +58,7 @@
             </thead>
             <tbody>
             {% if records %}
-                {% for record in records %}
+                {% for record in records.items %}
                     <tr>
                         <td>{{ moment(record.date).format('DD-MM-YYYY') }}</td>
                         <td>{{ record.done }}</td>
@@ -78,16 +78,45 @@
                 </tr>
             {% endif %}
 
-            {% if records %}
+            {% if records.items %}
                 <tr class="bg-warning">
                     <td>Итого:</td>
-                    <td>{{ records|sum(attribute="done") }}</td>
-                    <td>{{ records|sum(attribute="sent") }}</td>
-                    <td>{{ records|sum(attribute="mistakes") }}</td>
+                    <td>{{ records.items|sum(attribute="done") }}</td>
+                    <td>{{ records.items|sum(attribute="sent") }}</td>
+                    <td>{{ records.items|sum(attribute="mistakes") }}</td>
                     <td></td>
                 </tr>
             {% endif %}
             </tbody>
         </table>
+
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                {% if records.has_prev %}
+                    <li class="page-item"> <a class="page-link" href="{{ url_for('page_pcr_index', page=records.prev_num) }}">Назад</a></li>
+                {% else %}
+                    <li class="page-item"><a class="page-link btn disabled" href="#">Назад</a></li>
+                {% endif %}
+
+                {% for page in records.iter_pages(left_edge=2, left_current=2, right_current=5, right_edge=2) %}
+                    {% if page %}
+                        {% if page != records.page %}
+                            <li class="page-item"><a class="page-link" href="{{ url_for('page_pcr_index', page=page) }}">{{ page }}</a></li>
+                        {% else %}
+                            <li class="page-item active"><a class="page-link" href="{{ url_for('page_pcr_index', page=page) }}">{{ page }}</a></li>
+                        {% endif %}
+                    {% else %}
+                        <span class=ellipsis>…</span>
+                    {% endif %}
+                {% endfor %}
+
+                {% if records.has_next %}
+                    <li class="page-item"> <a class="page-link" href="{{ url_for('page_pcr_index', page=records.next_num) }}">Вперед</a></li>
+                {% else %}
+                    <li class="page-item"><a class="page-link btn disabled" href="#">Вперед</a></li>
+                {% endif %}
+
+            </ul>
+        </nav>
     </div>
 {% endblock %}

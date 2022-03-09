@@ -1,3 +1,5 @@
+from email.policy import default
+import errno
 from flask import render_template, request, redirect, flash, session, url_for
 from app import app, db
 from app.models import *
@@ -9,6 +11,7 @@ default_date = date.today() - timedelta(days=1)
 
 @app.route("/", methods=["GET", "POST"])
 def home():
+
     """ Создаем форму поиска """
     form = SearchForm()
 
@@ -47,8 +50,13 @@ def home():
     return render_template('index.html', form=form, date=filter_date, end_date=end_date, all_data=all_data)
 
 
-@app.route("/pcr", methods=["POST", "GET"])
-def page_pcr_index():
+@app.route("/pcr", methods=["POST", "GET"], defaults={"page": 1})
+@app.route("/pcr/<int:page>", methods=["POST", "GET"])
+def page_pcr_index(page):
+    # Количество записей на странице
+    per_page = 5
+
+    page = page
     """ Форма поиска """
     form = SearchForm()
 
@@ -67,7 +75,8 @@ def page_pcr_index():
         session['table'] = tables[0][0]
         selected_table = tables[0][0]
 
-    records = eval(selected_table).query.order_by(eval(selected_table).date).all()
+    # records = eval(selected_table).query.order_by(eval(selected_table).date).all()
+    records = eval(selected_table).query.order_by(eval(selected_table).date).paginate(page, per_page, error_out=False)
 
     return render_template('pcr/index.html', records=records, form=form, tables=tables)
 
