@@ -54,7 +54,7 @@ def home():
 @app.route("/pcr/<int:page>", methods=["POST", "GET"])
 def page_pcr_index(page):
     # Количество записей на странице
-    per_page = 5
+    per_page = 15
 
     page = page
     """ Форма поиска """
