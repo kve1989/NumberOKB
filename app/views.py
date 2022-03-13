@@ -1,5 +1,3 @@
-from email.policy import default
-import errno
 from flask import render_template, request, redirect, flash, session, url_for
 from app import app, db
 from app.models import *
