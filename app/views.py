@@ -52,7 +52,7 @@ def home():
 @app.route("/pcr/<int:page>", methods=["POST", "GET"])
 def page_pcr_index(page):
     # Количество записей на странице
-    per_page = 15
+    per_page = 12
 
     page = page
     """ Форма поиска """
@@ -76,7 +76,7 @@ def page_pcr_index(page):
     # records = eval(selected_table).query.order_by(eval(selected_table).date).all()
     records = eval(selected_table).query.order_by(eval(selected_table).date).paginate(page, per_page, error_out=False)
 
-    return render_template('pcr/index.html', records=records, form=form, tables=tables)
+    return render_template('pcr/index.html', records=records, form=form, tables=tables, count=per_page)
 
 
 @app.route("/pcr/create")
