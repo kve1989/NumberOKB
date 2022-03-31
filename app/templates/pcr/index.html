@@ -99,7 +99,7 @@
         </div>
 
         {% if records.total > count %}
-            <nav aria-label="Page navigation example">
+            <nav aria-label="Pagination">
                 <ul class="pagination justify-content-center">
                     {% if records.has_prev %}
                         <li class="page-item"><a class="page-link" href="{{ url_for('page_pcr_index', page=records.prev_num) }}">Начало</a></li>
