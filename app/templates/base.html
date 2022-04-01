@@ -13,32 +13,6 @@
 </head>
 <body>
     <main>
-        <!-- {% block sidebar %}
-        <aside>
-            <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark h-100" style="width: 280px">
-                <a class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none" href="{{ url_for('home') }}">
-                    <img class="me-2" width="50" src="{{ url_for('static', filename='img/logo/logo_small.png') }}" alt="Логотип ОКБ">
-                    <span class="fs-4">Цифра</span>
-                </a>
-                <hr>
-                <ul class="list-unstyled menu fw-normal pb-1 small mb-auto">
-                    <li class="mb-1">
-                        <button class="btn btn-toggle text-white align-items-center rounded w-100" data-bs-toggle="collapse" data-bs-target="#reports-collapse" aria-expanded="{{ 'true' if active_page else 'false' }}"><i class="fal fa-file-alt me-2"></i> Отчеты</button>
-                        <div class="collapse {{ 'show' if active_page }}" id="reports-collapse">
-                            <ul class="btn-toggle-nav submenu text-white list-unstyled fw-normal pb-1 small">
-                                <li><a href="{{ url_for('page_pcr_index') }}" class="link-light mt-2 rounded {{ 'fw-bold bg-light text-dark' if active_page == 'pcr' else '' }}">ПЦР</a></li>
-                                <li><a href="#" class="link-light mt-2 rounded">МСЭ</a></li>
-                            </ul>
-                        </div>
-                    </li>
-                </ul>
-                <hr>
-            </div>
-        </aside>
-        {% endblock %} -->
-
-        <!-- <div class="divider"></div> -->
-
         <article class="p-3 position-relative">
             {% with messages = get_flashed_messages(with_categories=True) %}
                 {% if messages %}
@@ -54,8 +28,6 @@
             {% block body %}{% endblock %}
         </article>
     </main>
-
-
 
 {% block scripts %}
     <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
