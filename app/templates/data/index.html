@@ -79,7 +79,7 @@
             {% endif %}
 
             {% if records %}
-                <tr class="bg-warning">
+                <tr class="bg-warning fw-bold">
                     <td>Итого:</td>
                     <td>{{ records|sum(attribute="done") }}</td>
                     <td>{{ records|sum(attribute="sent") }}</td>
