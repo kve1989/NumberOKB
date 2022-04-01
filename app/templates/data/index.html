@@ -28,7 +28,6 @@
                 <i class="far fa-plus"></i>
             </a>
         </div>
-
         <div class="card mt-2 mb-2">
             <div class="card-body">
                 <form id="SearchFormFromAdminPage" action=" {{ url_for('page_pcr_index') }} " method="post">
@@ -46,19 +45,20 @@
             </div>
         </div>
 
+
         <table class="table table-hover mt-3">
             <thead>
             <tr>
                 <th class="col"><i class="far fa-calendar-alt me-1"></i> Дата</th>
-                <th class="col">Выполнено</th>
-                <th class="col">Отправлено</th>
-                <th class="col">Ошибки</th>
-                <th class="col">Действия</th>
+                <th class="col"><i class="fas fa-check me-1 text-success"></i> Выполнено</th>
+                <th class="col"><i class="fas fa-paper-plane me-1 text-primary"></i> Отправлено</th>
+                <th class="col"><i class="fas fa-exclamation-circle me-1 text-danger"></i> Ошибки</th>
+                <th class="col"><i class="fas fa-bolt me-1 text-secondary"></i> Действия</th>
             </tr>
             </thead>
             <tbody>
             {% if records %}
-                {% for record in records.items %}
+                {% for record in records %}
                     <tr>
                         <td>{{ moment(record.date).format('DD-MM-YYYY') }}</td>
                         <td>{{ record.done }}</td>
@@ -78,58 +78,23 @@
                 </tr>
             {% endif %}
 
-            {% if records.items %}
+            {% if records %}
                 <tr class="bg-warning">
                     <td>Итого:</td>
-                    <td>{{ records.items|sum(attribute="done") }}</td>
-                    <td>{{ records.items|sum(attribute="sent") }}</td>
-                    <td>{{ records.items|sum(attribute="mistakes") }}</td>
+                    <td>{{ records|sum(attribute="done") }}</td>
+                    <td>{{ records|sum(attribute="sent") }}</td>
+                    <td>{{ records|sum(attribute="mistakes") }}</td>
                     <td></td>
                 </tr>
             {% endif %}
             </tbody>
         </table>
-
         <div class="row">
             <div class="col">
                 <p class="text-secondary fst-italic">
-                    Всего записей: {{ records.total }}
+                    Всего записей: {{ records|length }}
                 </p>
             </div>
         </div>
-
-        {% if records.total > count %}
-            <nav aria-label="Pagination">
-                <ul class="pagination justify-content-center">
-                    {% if records.has_prev %}
-                        <li class="page-item"><a class="page-link" href="{{ url_for('page_pcr_index', page=records.prev_num) }}">Начало</a></li>
-                        <li class="page-item"><a class="page-link" href="{{ url_for('page_pcr_index', page=records.prev_num) }}">&#8592;</a></li>
-                    {% else %}
-                        <li class="page-item"><a class="page-link disabled" href="{{ url_for('page_pcr_index', page=records.prev_num) }}">Начало</a></li>
-                        <li class="page-item"><a class="page-link disabled" href="#">&#8592;</a></li>
-                    {% endif %}
-
-                    {% for page in records.iter_pages(left_edge=2, left_current=2, right_current=5, right_edge=2) %}
-                        {% if page %}
-                            {% if page != records.page %}
-                                <li class="page-item"><a class="page-link" href="{{ url_for('page_pcr_index', page=page) }}">{{ page }}</a></li>
-                            {% else %}
-                                <li class="page-item active"><a class="page-link" href="{{ url_for('page_pcr_index', page=page) }}">{{ page }}</a></li>
-                            {% endif %}
-                        {% else %}
-                            <li class="page-item">…</li>
-                        {% endif %}
-                    {% endfor %}
-
-                    {% if records.has_next %}
-                        <li class="page-item"><a class="page-link" href="{{ url_for('page_pcr_index', page=records.next_num) }}">&#8594;</a></li>
-                        <li class="page-item"><a class="page-link" href="{{ url_for('page_pcr_index', page=records.pages) }}">Последняя</a></li>
-                    {% else %}
-                        <li class="page-item"><a class="page-link disabled" href="#">&#8594;</a></li>
-                        <li class="page-item"><a class="page-link disabled" href="{{ url_for('page_pcr_index', page=records.pages) }}">Последняя</a></li>
-                    {% endif %}
-                </ul>
-            </nav>
-        {% endif %}
     </div>
 {% endblock %}

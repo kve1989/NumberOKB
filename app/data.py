@@ -22,20 +22,20 @@ def page_pcr_index():
 
     records = eval(selected_table).query.order_by(eval(selected_table).id.desc()).all()
 
-    return render_template('pcr/index.html', records=records, form=form, tables=tables)
+    return render_template('data/index.html', records=records, form=form, tables=tables)
 
 
 @app.route("/data/create")
 def page_pcr_create():
     form = Form()
-    return render_template('pcr/create.html', form=form, tables=tables, date=default_date)
+    return render_template('data/create.html', form=form, tables=tables, date=default_date)
 
 
 @app.route("/data/<int:id>/edit")
 def pcr_page_edit(id):
     form = Form()
     record = eval(session['table']).query.get_or_404(id)
-    return render_template('pcr/edit.html', form=form, record=record, tables=tables)
+    return render_template('data/edit.html', form=form, record=record, tables=tables)
 
 
 @app.route("/data/new", methods=['POST'])
@@ -60,7 +60,7 @@ def pcr_new():
         for err_msg in form.errors.values():
             flash(err_msg, 'danger')
 
-    return render_template('pcr/create.html', form=form)
+    return render_template('data/create.html', form=form)
 
 
 @app.route("/data/<int:id>/update", methods=['POST'])
