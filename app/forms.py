@@ -45,5 +45,5 @@ class Form(FlaskForm):
 class SearchForm(FlaskForm):
     # Форма для поиска
     table = SelectField('Таблица', choices=tables, validators=[DataRequired()])
-    date = DateField('Задать дату', validators=[DataRequired()])
-    date_end = DateField('Задать конечную дату')
+    date = DateField('Начало', validators=[DataRequired()])
+    date_end = DateField('Конец')
