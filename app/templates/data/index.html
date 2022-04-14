@@ -1,15 +1,21 @@
 {% extends 'base.html' %}
-{% block title %} Таблица {% endblock %}
+{% block title %}
+    {% for table in tables %}
+        {% if request.form.data or session['table'] in table %}
+            {{ table[1] }}
+        {%endif%}
+    {% endfor %}
+{% endblock %}
 
 {% block body %}
 
     <div class="container">
 
-        {% for table in tables %}
+        <!-- {% for table in tables %}
             {% if request.form.data or session['table'] in table %}
                 <h1>Данные по <u>{{ table[1] }}</u></h1>
             {%endif%}
-        {% endfor %}
+        {% endfor %} -->
 
         {% with messages = get_flashed_messages(with_categories=True) %}
             {% if messages %}
@@ -23,18 +29,14 @@
             {% endif %}
         {% endwith %}
 
-        <div class="">
-            <a class="btn btn-warning" aria-current="page" href="{{ url_for('page_pcr_create') }}">
-                <i class="far fa-plus"></i>
-            </a>
-        </div>
         <div class="card mt-2 mb-2">
             <div class="card-body">
                 <form id="SearchFormFromAdminPage" action=" {{ url_for('page_pcr_index') }} " method="post">
                     {{ form.csrf_token() }}
                     <div class="row mb-2">
                         <div class="col">
-                            <select class="form-select" name="table" id="">
+                            <select class="form-select" name="table" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                title="Выбрать таблицу">
                                 {% for table in tables %}
                                 <option value="{{ table[0] }}" {{ 'selected' if session['table'] in table[0] else '' }}>{{ table[1] }}</option>
                                 {% endfor %}
@@ -45,15 +47,19 @@
             </div>
         </div>
 
-
-        <table class="table table-hover mt-3">
+        <table class="table table-hover mt-2">
             <thead>
-            <tr>
-                <th class="col"><i class="far fa-calendar-alt me-1"></i> Дата</th>
-                <th class="col"><i class="fas fa-check me-1 text-success"></i> Выполнено</th>
-                <th class="col"><i class="fas fa-paper-plane me-1 text-primary"></i> Отправлено</th>
-                <th class="col"><i class="fas fa-exclamation-circle me-1 text-danger"></i> Ошибки</th>
-                <th class="col"><i class="fas fa-bolt me-1 text-secondary"></i> Действия</th>
+            <tr class="table-light">
+                <th class="col align-middle"><i class="far fa-calendar-alt me-1"></i> Дата</th>
+                <th class="col align-middle"><i class="fas fa-check me-1 text-success"></i> Выполнено</th>
+                <th class="col align-middle"><i class="fas fa-paper-plane me-1 text-primary"></i> Отправлено</th>
+                <th class="col align-middle"><i class="fas fa-exclamation-circle me-1 text-danger"></i> Ошибки</th>
+                <th class="col align-middle"><i class="fas fa-bolt me-1 text-secondary"></i> Действия</th>
+                <th class="col d-flex justify-content-end">
+                    <a class="btn btn-warning" aria-current="page" href="{{ url_for('page_pcr_create') }}"
+                        data-bs-toggle="tooltip" data-bs-placement="top" title="Добавить новую запись">
+                        <i class="far fa-plus"></i>
+                    </a></th>
             </tr>
             </thead>
             <tbody>
@@ -64,7 +70,7 @@
                         <td>{{ record.done }}</td>
                         <td>{{ record.sent }}</td>
                         <td>{{ record.mistakes }}</td>
-                        <td>
+                        <td colspan="2">
                             <a class="link text-primary" href="{{ url_for('pcr_page_edit', id=record.id) }}">
                             <i class="fas fa-pencil-alt me-1"></i>Изменить</a>
                             <a class="link text-danger" href="{{ url_for('pcr_delete', id=record.id) }}">
@@ -74,17 +80,17 @@
                 {% endfor %}
             {% else %}
                 <tr>
-                    <td colspan="5" class="text-center">Данных нет</td>
+                    <td colspan="6" class="text-center">Данных нет</td>
                 </tr>
             {% endif %}
 
             {% if records %}
-                <tr class="bg-warning fw-bold">
+                <tr class="table-warning fw-bold">
                     <td>Итого:</td>
                     <td>{{ records|sum(attribute="done") }}</td>
                     <td>{{ records|sum(attribute="sent") }}</td>
                     <td>{{ records|sum(attribute="mistakes") }}</td>
-                    <td></td>
+                    <!-- <td colspan="2"></td> -->
                 </tr>
             {% endif %}
             </tbody>
@@ -92,9 +98,20 @@
         <div class="row">
             <div class="col">
                 <p class="text-secondary fst-italic">
-                    Всего записей: {{ records|length }}
+                    Всего записей: {{ records|length if records else '0'}}
                 </p>
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    {{ super() }}
+    <script>
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    </script>
 {% endblock %}
