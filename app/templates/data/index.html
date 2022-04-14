@@ -11,12 +11,6 @@
 
     <div class="container">
 
-        <!-- {% for table in tables %}
-            {% if request.form.data or session['table'] in table %}
-                <h1>Данные по <u>{{ table[1] }}</u></h1>
-            {%endif%}
-        {% endfor %} -->
-
         {% with messages = get_flashed_messages(with_categories=True) %}
             {% if messages %}
                 {% for category, message in messages %}
@@ -38,7 +32,13 @@
                             <select class="form-select" name="table" data-bs-toggle="tooltip" data-bs-placement="bottom"
                                 title="Выбрать таблицу">
                                 {% for table in tables %}
-                                <option value="{{ table[0] }}" {{ 'selected' if session['table'] in table[0] else '' }}>{{ table[1] }}</option>
+                                    {% if session['table'] %}
+                                        <option value="{{ table[0] }}"
+                                            {{ 'selected' if session['table'] in table[0] else '' }}>{{ table[1] }}
+                                        </option>
+                                    {% else %}
+                                        <option value="{{ table[0] }}">{{ table[1] }}</option>
+                                    {% endif %}
                                 {% endfor %}
                             </select>
                         </div>

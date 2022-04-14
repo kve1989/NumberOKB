@@ -12,8 +12,8 @@ def page_pcr_index():
 
     records = None
 
-    """ Таблица выбранная пользователем """
-    selected_table = None or session['table']
+    """ Таблица по умолчанию """
+    selected_table = tables[0][0] or session['table']
 
     if form.is_submitted():
         """ В сессию и переменную складываем имя таблицы, которую пользователь выбрал на странице"""
