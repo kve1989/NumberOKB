@@ -7,8 +7,8 @@ ENV PYTHONDONTWRITEBYCODE=1 \
 
 COPY . .
 
-RUN python -m pip install --upgrade pip
-RUN python -m pip install -r requirements.txt
+RUN python -m pip install --upgrade pip --proxy http://192.168.2.30:3128
+RUN python -m pip install -r requirements.txt --proxy http://192.168.2.30:3128
 RUN python create_db.py
 
 EXPOSE 5000
