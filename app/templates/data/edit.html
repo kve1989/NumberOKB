@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'layouts/base.html' %}
 {% block title %} Редактирование {% endblock %}
 
 {% block body %}
@@ -6,12 +6,18 @@
     <div class="card mt-3">
         <div class="card-header">Изменение записи</div>
         <div class="card-body">
-            <form action="{{ url_for('pcr_update', id=record.id) }}" method="POST">
-
+            <form action="{{ url_for('data_update', id=record.id) }}" method="POST">
+                <select class="form-select" name="table" disabled>
+                    {% for table in tables %}
+                        <option value="{{ table[0] }}" {{ 'selected' if session['table'] in table[0] else '' }}>
+                            {{ table[1] }}
+                        </option>
+                    {% endfor %}
+                </select>
                 {% include 'data/components/form.html' %}
 
                 <button class="btn btn-primary" type="submit"><i class="far fa-save me-1"></i>Сохранить</button>
-                <a class="btn btn-secondary" href="{{ url_for('page_pcr_index') }}">Отмена</a>
+                <a class="btn btn-secondary" href="{{ url_for('page_data_index') }}">Отмена</a>
             </form>
         </div>
     </div>

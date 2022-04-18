@@ -1,11 +1,13 @@
-{% extends 'guest.html' %}
+{% extends 'layouts/guest.html' %}
 
 {% block title %} Главная {% endblock %}
 
 {% block body %}
     <div class="container">
         <div class="d-flex align-items-center">
-            <h1 class="m-0">Данные за {{ moment(date).format("DD.MM.YYYY") }} {{ "по " + moment(end_date).format("DD.MM.YYYY")|e if end_date else ''}}</h1>
+            <h1 class="m-0">
+                Данные за {{ moment(date).format("DD.MM.YYYY") }} {{ "по " + moment(end_date).format("DD.MM.YYYY")|e if end_date else ''}}
+            </h1>
             <button class="btn btn-info ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
                     aria-expanded="false" aria-controls="collapseOne"><i class="far fa-filter"></i></button>
         </div>
