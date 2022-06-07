@@ -260,6 +260,7 @@ class VaccinationAll(db.Model):
     def __repr__(self):
         return '<VaccinationAll %r>' % self.id
 
+
 # 21. Вакцинация (Covid)
 class VaccinationCovid(db.Model):
     __tablename__ = '21.Vaccination(Covid)'
@@ -271,6 +272,7 @@ class VaccinationCovid(db.Model):
 
     def __repr__(self):
         return '<VaccinationCovid %r>' % self.id
+
 
 # 22. Вызов врача на дом
 class CallDocAtHome(db.Model):
@@ -335,6 +337,7 @@ class ELNClose(db.Model):
 
     def __repr__(self):
         return '<ELNClose %r>' % self.id
+
 
 # 27. Лабораторные исследования (ПЦР)
 class LabResPCR(db.Model):
