@@ -5,15 +5,19 @@ from app.forms import Form, SearchForm, tables
 from app.views import default_date
 from datetime import datetime
 
+
 @app.route("/data", methods=["POST", "GET"])
-def page_pcr_index():
+def page_data_index():
     """ Форма поиска """
     form = SearchForm()
 
     records = None
 
     """ Таблица по умолчанию """
-    selected_table = tables[0][0] or session['table']
+    if session.get('table'):
+        selected_table = session['table']
+    else:
+        selected_table = session['table'] = tables[0][0]
 
     if form.is_submitted():
         """ В сессию и переменную складываем имя таблицы, которую пользователь выбрал на странице"""
@@ -26,27 +30,29 @@ def page_pcr_index():
 
 
 @app.route("/data/create")
-def page_pcr_create():
+def page_data_create():
     form = Form()
     return render_template('data/create.html', form=form, tables=tables, date=default_date)
 
 
 @app.route("/data/<int:id>/edit")
-def pcr_page_edit(id):
+def page_data_edit(id):
     form = Form()
     record = eval(session['table']).query.get_or_404(id)
     return render_template('data/edit.html', form=form, record=record, tables=tables)
 
 
 @app.route("/data/new", methods=['POST'])
-def pcr_new():
+def data_store():
     date = datetime.strptime(request.form['date'], "%Y-%m-%d")
 
     form = Form()
 
     if form.is_submitted():
-        record = eval(form.table.data)(date=date, done=form.done.data,
-                                       sent=form.sent.data, mistakes=form.mistakes.data)
+        record = eval(form.table.data)(date=date,
+                                        done=form.done.data,
+                                        sent=form.sent.data,
+                                        mistakes=form.mistakes.data)
 
         try:
             db.session.add(record)
@@ -54,7 +60,7 @@ def pcr_new():
             flash("Запись успешно добавлена!", 'success')
         except:
             flash("Ошибка при добавлении!", 'danger')
-        return redirect(url_for('page_pcr_index'))
+        return redirect(url_for('page_data_index'))
 
     if form.errors != {}:
         for err_msg in form.errors.values():
@@ -64,7 +70,7 @@ def pcr_new():
 
 
 @app.route("/data/<int:id>/update", methods=['POST'])
-def pcr_update(id):
+def data_update(id):
     record = eval(session['table']).query.get_or_404(id)
     record.date = datetime.strptime(request.form['date'], "%Y-%m-%d")
     record.done = request.form['done']
@@ -84,11 +90,11 @@ def pcr_update(id):
         for err_msg in form.errors.values():
             flash(err_msg, 'danger')
 
-    return redirect(url_for('page_pcr_index'))
+    return redirect(url_for('page_data_index'))
 
 
 @app.route("/data/<int:id>/delete")
-def pcr_delete(id):
+def data_delete(id):
     record = eval(session['table']).query.get_or_404(id)
 
     try:
@@ -98,4 +104,4 @@ def pcr_delete(id):
     except:
         flash("Ошибка при удалении!", 'danger')
 
-    return redirect(url_for('page_pcr_index'))
+    return redirect(url_for('page_data_index'))
