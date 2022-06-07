@@ -1,23 +1,22 @@
 {{ form.csrf_token() }}
 
 <div class="row mb-2">
-    <div class="col-6">
+    <div class="col-3">
         {{ form.date.label(class="form-label") }}
         {{ form.date(class="form-control", value=record.date if record else date) }}
     </div>
 
-    <div class="col-6">
-        {{ form.sent.label(class="form-label") }}
-        {{ form.sent(class="form-control", value=record.sent if record) }}
-    </div>
-</div>
-<div class="row mb-2">
-    <div class="col-6">
+    <div class="col-3">
         {{ form.done.label(class="form-label") }}
         {{ form.done(class="form-control", value=record.done if record) }}
     </div>
 
-    <div class="col-6">
+    <div class="col-3">
+        {{ form.sent.label(class="form-label") }}
+        {{ form.sent(class="form-control", value=record.sent if record) }}
+    </div>
+
+    <div class="col-3">
         {{ form.mistakes.label(class="form-label") }}
         {{ form.mistakes(class="form-control", value=record.mistakes if record) }}
     </div>
