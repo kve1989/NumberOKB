@@ -4,8 +4,10 @@ from app.models import *
 from app.forms import SearchForm, tables
 from datetime import date, timedelta
 
-default_date = date.today() - timedelta(days=1)
+def get_date():
+    return date.today() - timedelta(days=1)
 
+default_date = get_date()
 
 @app.route("/", methods=["GET", "POST"])
 def home():
