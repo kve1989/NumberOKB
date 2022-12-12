@@ -5,7 +5,6 @@ from app.forms import Form, SearchForm, tables
 from app.views import default_date
 from datetime import datetime
 
-
 @app.route("/data", methods=["POST", "GET"])
 def page_data_index():
     """ Форма поиска """
@@ -68,30 +67,27 @@ def data_store():
 
     return render_template('data/create.html', form=form)
 
-
 @app.route("/data/<int:id>/update", methods=['POST'])
 def data_update(id):
     record = eval(session['table']).query.get_or_404(id)
-    record.date = datetime.strptime(request.form['date'], "%Y-%m-%d")
-    record.done = request.form['done']
-    record.sent = request.form['sent']
-    record.mistakes = request.form['mistakes']
-
     form = Form()
+    if request.method == 'POST':
+        field_date = datetime.strptime(request.form.get('date'), "%Y-%m-%d")
+        field_done = request.form.get('done')
+        field_sent = request.form.get('sent')
+        field_mistakes = request.form.get('mistakes')
 
-    if form.is_submitted():
-        try:
+        if field_done != '' and field_sent != '' and field_mistakes != '':
+            record.date = field_date
+            record.done = field_done
+            record.sent = field_sent
+            record.mistakes = field_mistakes
             db.session.commit()
             flash("Запись успешно изменена!", 'success')
-        except:
+            return redirect(url_for('page_data_index'))
+        else:
             flash("Ошибка при изменении!", 'danger')
-
-    if form.errors != {}:
-        for err_msg in form.errors.values():
-            flash(err_msg, 'danger')
-
-    return redirect(url_for('page_data_index'))
-
+            return render_template('data/edit.html', form=form, record=record, tables=tables)
 
 @app.route("/data/<int:id>/delete")
 def data_delete(id):
