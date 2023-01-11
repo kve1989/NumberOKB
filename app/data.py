@@ -2,7 +2,7 @@ from flask import render_template, request, redirect, flash, session, url_for
 from app import app, db
 from app.models import *
 from app.forms import Form, SearchForm, tables
-from app.views import default_date
+from app.views import default_date, get_date
 from datetime import datetime
 
 @app.route("/data", methods=["POST", "GET"])
@@ -31,7 +31,7 @@ def page_data_index():
 @app.route("/data/create")
 def page_data_create():
     form = Form()
-    return render_template('data/create.html', form=form, tables=tables, date=default_date)
+    return render_template('data/create.html', form=form, tables=tables, date=get_date())
 
 
 @app.route("/data/<int:id>/edit")
