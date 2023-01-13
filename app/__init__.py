@@ -4,6 +4,8 @@ from flask_moment import Moment
 from flask_migrate import Migrate
 from config import Config
 
+UPLOAD_FOLDER = '/uploads'
+
 app = Flask(__name__)
 app.config.from_object(Config)
 db = SQLAlchemy(app)
