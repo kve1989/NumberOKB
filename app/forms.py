@@ -1,4 +1,5 @@
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileField, FileRequired, FileAllowed
 from wtforms import StringField, DateField, IntegerField, SelectField
 from wtforms.validators import DataRequired
 
@@ -30,8 +31,13 @@ tables = [
     ('InformPerinatalDeath', 'Сведения о перинатальной смерти'),
     ('ELNOpen', 'ЭЛН открытых'),
     ('ELNClose', 'ЭЛН закрытых'),
+    ('Signs', 'ЭЦП')
 ]
 
+typesCert = [
+    ('personal', 'Физическое лицо'),
+    ('organdname', 'Юридическое лицо')
+]
 
 class Form(FlaskForm):
     # Определяем форму с полями и берем за основу
@@ -47,3 +53,19 @@ class SearchForm(FlaskForm):
     table = SelectField('Таблица', choices=tables, validators=[DataRequired()])
     date = DateField('Начало', validators=[DataRequired()])
     date_end = DateField('Конец')
+
+
+class SignForm(FlaskForm):
+    # Форма для создания записи ЭЦП
+    owner = StringField('Владелец ключа')
+    typeCertificate = SelectField('Тип сертификата', choices=typesCert, validators=[DataRequired()])
+    dateStart = DateField('Дата начала действия')
+    dateEnd = DateField('Дата окончания действия')
+    fileCertificate = FileField('Файл сертификата', validators=[
+        FileRequired(),
+        FileAllowed(['cer'], 'Разрешается только cer')
+    ])
+    fileContainer = FileField('Файл контейнера', validators=[
+        FileRequired(),
+        FileAllowed(['pfx'], 'Разрешается только pfx')
+    ])

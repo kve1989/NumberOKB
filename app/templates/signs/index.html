@@ -1,0 +1,87 @@
+{% extends 'layouts/base.html' %}
+
+<!-- {% block title %}
+    {% for table in tables %}
+        {% if request.form.data or session['table'] in table %}
+            {{ table[1] }}
+        {%endif%}
+    {% endfor %}
+{% endblock %} -->
+
+{% block body %}
+
+    <div class="container">
+
+        {% with messages = get_flashed_messages(with_categories=True) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show m-3 position-absolute top-0 end-0"
+                         role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <table class="table table-hover mt-2">
+            <!-- <thead>
+            <tr class="table-light">
+                <th class="col align-middle"><i class="far fa-calendar-alt me-1"></i> Владелец</th>
+                <th class="col align-middle"><i class="fas fa-check me-1 text-success"></i> Дата начала</th>
+                <th class="col align-middle"><i class="fas fa-paper-plane me-1 text-primary"></i> Дата конца</th>
+                <th class="col align-middle"><i class="fas fa-exclamation-circle me-1 text-danger"></i> Ошибки</th>
+                <th class="col align-middle"><i class="fas fa-bolt me-1 text-secondary"></i> Действия</th>
+                <th class="col d-flex justify-content-end">
+                    <a class="btn btn-warning" aria-current="page" href="{{ url_for('page_sign_create') }}"
+                        data-bs-toggle="tooltip" data-bs-placement="top" title="Добавить новую запись">
+                        <i class="far fa-plus"></i>
+                    </a></th>
+            </tr>
+            </thead> -->
+            <tbody>
+            {% if records %}
+                {% for record in records %}
+                    <tr>
+                        <td>{{ record.owner }}</td>
+                        <td>{{ record.type }}</td>
+                        <td>{{ moment(record.dateStart).format('DD-MM-YYYY') }}</td>
+                        <td>{{ moment(record.dateEnd).format('DD-MM-YYYY') }}</td>
+                        <td>{{ record.certificateFile }}</td>
+                        <td>{{ record.containerFile }}</td>
+                        <td colspan="2">
+                            <a class="link text-primary" href="{{ url_for('page_sign_edit', id=record.id) }}">
+                            <i class="fas fa-pencil-alt me-1"></i>Изменить</a>
+                            <a class="link text-danger" href="{{ url_for('sign_delete', id=record.id) }}">
+                                <i class="fas fa-trash-alt me-1"></i>Удалить</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="6" class="text-center">Данных нет</td>
+                </tr>
+            {% endif %}
+
+            </tbody>
+        </table>
+        <div class="row">
+            <div class="col">
+                <p class="text-secondary fst-italic">
+                    Всего записей: {{ records|length if records else '0'}}
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    {{ super() }}
+    <script>
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    </script>
+{% endblock %}

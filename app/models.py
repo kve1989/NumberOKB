@@ -350,3 +350,17 @@ class LabResPCR(db.Model):
 
     def __repr__(self):
         return '<LabResPCR %r>' % self.id
+
+# Электронно-цифровые подписи
+class Signs(db.Model):
+    __tablename__ = 'Signs'
+    id = db.Column(db.Integer, primary_key=True)
+    owner = db.Column(db.String)
+    type = db.Column(db.String)
+    dateStart = db.Column(db.Date)
+    dateEnd = db.Column(db.Date)
+    fileCertificate = db.Column(db.String)
+    fileContainer = db.Column(db.String)
+
+    def __repr__(self):
+        return '<Signs %r>' %self.id
