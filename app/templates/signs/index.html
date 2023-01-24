@@ -24,21 +24,32 @@
             {% endif %}
         {% endwith %}
 
+        <div class="row">
+            <div class="col">
+                <a class="btn btn-warning" aria-current="page" href="{{ url_for('page_sign_create') }}"
+                data-bs-toggle="tooltip" data-bs-placement="top" title="Добавить новую запись">
+                <i class="far fa-plus"></i>
+                </a>
+            </div>
+        </div>
         <table class="table table-hover mt-2">
-            <!-- <thead>
-            <tr class="table-light">
-                <th class="col align-middle"><i class="far fa-calendar-alt me-1"></i> Владелец</th>
-                <th class="col align-middle"><i class="fas fa-check me-1 text-success"></i> Дата начала</th>
-                <th class="col align-middle"><i class="fas fa-paper-plane me-1 text-primary"></i> Дата конца</th>
-                <th class="col align-middle"><i class="fas fa-exclamation-circle me-1 text-danger"></i> Ошибки</th>
-                <th class="col align-middle"><i class="fas fa-bolt me-1 text-secondary"></i> Действия</th>
-                <th class="col d-flex justify-content-end">
-                    <a class="btn btn-warning" aria-current="page" href="{{ url_for('page_sign_create') }}"
-                        data-bs-toggle="tooltip" data-bs-placement="top" title="Добавить новую запись">
-                        <i class="far fa-plus"></i>
-                    </a></th>
-            </tr>
-            </thead> -->
+            <thead>
+                <tr class="table-light">
+                    <th class="col align-middle"><i class="fas fa-users"></i> Владелец</th>
+                    <th class="col align-middle"><i class="far fa-calendar-alt text-success"></i> Тип сертификата</th>
+                    <th class="col align-middle"><i class="far fa-calendar-alt text-success"></i> Дата начала</th>
+                    <th class="col align-middle"><i class="far fa-calendar-alt text-danger"></i> Дата конца</th>
+                    <th class="col align-middle"><i class="far fa-certificate"></i> Файл сертификата</th>
+                    <th class="col align-middle"><i class="far fa-archive text-danger"></i> Файл контейнера</th>
+                    <th class="col align-middle"><i class="fas fa-bolt text-secondary"></i> Действия</th>
+                    <!-- <th class="col d-flex justify-content-end">
+                        <a class="btn btn-warning" aria-current="page" href="{{ url_for('page_sign_create') }}"
+                            data-bs-toggle="tooltip" data-bs-placement="top" title="Добавить новую запись">
+                            <i class="far fa-plus"></i>
+                        </a>
+                    </th> -->
+                </tr>
+            </thead>
             <tbody>
             {% if records %}
                 {% for record in records %}
@@ -47,19 +58,21 @@
                         <td>{{ record.type }}</td>
                         <td>{{ moment(record.dateStart).format('DD-MM-YYYY') }}</td>
                         <td>{{ moment(record.dateEnd).format('DD-MM-YYYY') }}</td>
-                        <td>{{ record.certificateFile }}</td>
-                        <td>{{ record.containerFile }}</td>
+                        <td>{{ record.fileCertificate }}</td>
+                        <td>{{ record.fileContainer }}</td>
                         <td colspan="2">
                             <a class="link text-primary" href="{{ url_for('page_sign_edit', id=record.id) }}">
-                            <i class="fas fa-pencil-alt me-1"></i>Изменить</a>
+                                <i class="fas fa-pencil-alt me-1"></i>Изменить
+                            </a>
                             <a class="link text-danger" href="{{ url_for('sign_delete', id=record.id) }}">
-                                <i class="fas fa-trash-alt me-1"></i>Удалить</a>
+                                <i class="fas fa-trash-alt me-1"></i>Удалить
+                            </a>
                         </td>
                     </tr>
                 {% endfor %}
             {% else %}
                 <tr>
-                    <td colspan="6" class="text-center">Данных нет</td>
+                    <td colspan="7" class="text-center">Данных нет</td>
                 </tr>
             {% endif %}
 
