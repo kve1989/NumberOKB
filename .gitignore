@@ -6,3 +6,5 @@ db.db
 migrations
 .idea
 .vscode
+uploads/
+node_modules/
