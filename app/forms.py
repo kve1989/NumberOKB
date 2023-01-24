@@ -61,11 +61,11 @@ class SignForm(FlaskForm):
     typeCertificate = SelectField('Тип сертификата', choices=typesCert, validators=[DataRequired()])
     dateStart = DateField('Дата начала действия')
     dateEnd = DateField('Дата окончания действия')
-    fileCertificate = FileField('Файл сертификата', validators=[
+    fileCertificate = FileField('Файл сертификата (.cer)', validators=[
         FileRequired(),
         FileAllowed(['cer'], 'Разрешается только cer')
     ])
-    fileContainer = FileField('Файл контейнера', validators=[
+    fileContainer = FileField('Файл контейнера (.pfx/.reg)', validators=[
         FileRequired(),
-        FileAllowed(['pfx'], 'Разрешается только pfx')
+        FileAllowed(['pfx', 'reg'], 'Разрешается только pfx или reg')
     ])

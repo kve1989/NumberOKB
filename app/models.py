@@ -363,4 +363,4 @@ class Signs(db.Model):
     fileContainer = db.Column(db.String)
 
     def __repr__(self):
-        return '<Signs %r>' %self.id
+        return '<Signs %r>' % self.id
