@@ -2,14 +2,12 @@ FROM python:3-alpine
 
 WORKDIR /app
 
-ENV PYTHONDONTWRITEBYCODE=1
-ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYCODE=1 \
+    PYTHONUNBUFFERED=1
 
 COPY . .
 
-RUN python -m pip install --upgrade pip
-RUN python -m pip install -r requirements.txt
-RUN python create_db.py
+RUN python -m pip install --upgrade pip && python -m pip install -r requirements.txt && python create_db.py
 
 EXPOSE 5000
 
