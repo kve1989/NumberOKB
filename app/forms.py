@@ -30,8 +30,7 @@ tables = [
     ('DeathInform', 'Сведения о смерти'),
     ('InformPerinatalDeath', 'Сведения о перинатальной смерти'),
     ('ELNOpen', 'ЭЛН открытых'),
-    ('ELNClose', 'ЭЛН закрытых'),
-    ('Signs', 'ЭЦП')
+    ('ELNClose', 'ЭЛН закрытых')
 ]
 
 typesCert = [
@@ -63,9 +62,9 @@ class SignForm(FlaskForm):
     dateEnd = DateField('Дата окончания действия')
     fileCertificate = FileField('Файл сертификата (.cer)', validators=[
         FileRequired(),
-        FileAllowed(['cer'], 'Разрешается только cer')
+        FileAllowed(['cer'], 'Разрешается только .cer')
     ])
     fileContainer = FileField('Файл контейнера (.pfx/.reg)', validators=[
         FileRequired(),
-        FileAllowed(['pfx', 'reg'], 'Разрешается только pfx или reg')
+        FileAllowed(['pfx', 'reg'], 'Разрешается только .pfx или .reg')
     ])
