@@ -5,7 +5,7 @@
         <div class="row mb-2">
             <div class="col-8">
                 {{ form.owner.label(class="form-label") }}
-                {{ form.owner(class="form-control") }}
+                {{ form.owner(class="form-control", value=record.owner if record else '') }}
             </div>
             <div class="col-4">
                 {{ form.typeCertificate.label(class="form-label") }}
@@ -16,11 +16,11 @@
         <div class="row">
             <div class="col mb-3">
                 {{ form.dateStart.label(class="form-label") }}
-                {{ form.dateStart(class="form-control") }}
+                {{ form.dateStart(class="form-control", value=record.dateStart if record else dateStart) }}
             </div>
             <div class="col">
                 {{ form.dateEnd.label(class="form-label") }}
-                {{ form.dateEnd(class="form-control") }}
+                {{ form.dateEnd(class="form-control", value=record.dateEnd if record else dateEnd) }}
             </div>
         </div>
     </div>
