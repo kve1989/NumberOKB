@@ -2,16 +2,10 @@ from flask import render_template, request, redirect, flash, session, url_for, s
 from app import app, db
 from app.models import Signs
 from app.forms import SignForm
-from datetime import datetime
+from datetime import datetime, date, timedelta
 from werkzeug.utils import secure_filename
-import hashlib
+from .helpers import generateFilename
 import os
-
-def generateFilename(filename):
-    f_name = filename.rsplit('.', 1)
-    f_name[0] = hashlib.md5(f_name[0].encode('utf-8')).hexdigest()
-    return '.'.join(f_name)
-
 
 @app.route('/sign')
 def page_sign_index():
@@ -21,12 +15,15 @@ def page_sign_index():
 @app.route('/sign/create')
 def page_sign_create():
     form = SignForm()
-    return render_template('signs/create.html', form=form)
+    dateStart = date.today()
+    dateEnd = date.today() + timedelta(days=455)
+    return render_template('signs/create.html', form=form, dateStart=dateStart, dateEnd=dateEnd )
 
 @app.route('/sign/<int:id>/edit')
 def page_sign_edit(id):
     form = SignForm()
-    pass
+    record = Signs.query.get_or_404(id)
+    return render_template('signs/create.html', form=form, record=record )
 
 @app.route('/sign/store', methods=['POST'])
 def sign_store():
