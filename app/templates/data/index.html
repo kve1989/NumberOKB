@@ -114,5 +114,12 @@
         var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
             return new bootstrap.Tooltip(tooltipTriggerEl)
         })
+
+        let form = document.querySelector('#SearchFormFromAdminPage')
+        let select = form.querySelector('select')
+
+        select.addEventListener('change', (e) => {
+            form.submit();
+        })
     </script>
 {% endblock %}

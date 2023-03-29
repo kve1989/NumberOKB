@@ -25,52 +25,47 @@
                 </a>
             </div>
         </div>
-        <table class="table table-hover mt-2">
-            <thead>
-                <tr class="table-light">
-                    <th class="col align-middle"><i class="fas fa-users"></i> Владелец</th>
-                    <th class="col align-middle"><i class="far fa-calendar-alt text-success"></i> Тип сертификата</th>
-                    <th class="col align-middle"><i class="far fa-calendar-alt text-success"></i> Дата начала</th>
-                    <th class="col align-middle"><i class="far fa-calendar-alt text-danger"></i> Дата конца</th>
-                    <th class="col align-middle"><i class="far fa-certificate"></i> Файл сертификата</th>
-                    <th class="col align-middle"><i class="far fa-archive text-danger"></i> Файл контейнера</th>
-                    <th class="col align-middle"><i class="fas fa-bolt text-secondary"></i> Действия</th>
-                    <!-- <th class="col d-flex justify-content-end">
-                        <a class="btn btn-warning" aria-current="page" href="{{ url_for('page_sign_create') }}"
-                            data-bs-toggle="tooltip" data-bs-placement="top" title="Добавить новую запись">
-                            <i class="far fa-plus"></i>
-                        </a>
-                    </th> -->
-                </tr>
-            </thead>
-            <tbody>
+
+        <hr>
+        <div class="row mt-2">
             {% if records %}
                 {% for record in records %}
-                    <tr>
-                        <td>{{ record.owner }}</td>
-                        <td>{{ record.type }}</td>
-                        <td>{{ moment(record.dateStart).format('DD-MM-YYYY') }}</td>
-                        <td>{{ moment(record.dateEnd).format('DD-MM-YYYY') }}</td>
-                        <td>{{ record.fileCertificate }}</td>
-                        <td>{{ record.fileContainer }}</td>
-                        <td colspan="2">
-                            <a class="link text-primary" href="{{ url_for('page_sign_edit', id=record.id) }}">
-                                <i class="fas fa-pencil-alt me-1"></i>Изменить
-                            </a>
-                            <a class="link text-danger" href="{{ url_for('sign_delete', id=record.id) }}">
-                                <i class="fas fa-trash-alt me-1"></i>Удалить
-                            </a>
-                        </td>
-                    </tr>
+                    <div class="col col-4">
+                        <div class="card mb-3">
+                            <div class="card-header d-flex align-items-center">
+                                <h5 class="card-title m-0"><b>{{ record.owner }}</b></h5>
+                            </div>
+                            <div class="card-body lh-1">
+                                <!-- <p>{{ moment().unix() < moment(record.dateEnd).unix() }}</p>
+                                <p>{{ moment().unix()  }}</p> -->
+                                <p class="card-text">Действует с <b>{{ moment(record.dateStart).format('DD-MM-YYYY') }}</b> по <b>{{ moment(record.dateEnd).format('DD-MM-YYYY') }}</b></p>
+                                <p class="card-text">{{ record.serial_number }}</p>
+                                <p class="card-text">
+                                    {% if record.type == 'personal' %}
+                                        Должностное лицо
+                                    {% elif  record.type == 'organdname' %}
+                                        Юридическое лицо
+                                    {% elif  record.type == 'orgnotname' %}
+                                        Юридическое лицо без ФИО
+                                    {% elif  record.type == 'individual' %}
+                                        Физическое лицо
+                                    {% endif %}
+                                </p>
+                                <p class="card-text">Выдан: {{ record.issuer }}</p>
+                                <p class="card-text">
+                                    <a href="{{ url_for('download_file', file=record.fileCertificate) }}">Сертификат</a>
+                                    |
+                                    <a href="{{ url_for('download_file', file=record.fileContainer) }}">Контейнер</a>
+                                </p>
+                                <a href="{{ url_for('page_sign_edit', id=record.id) }}" class="btn btn-sm btn-warning"><i class="fas fa-pencil-alt me-1"></i>Изменить</a>
+                                <a href="{{ url_for('sign_delete', id=record.id) }}" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt me-1"></i>Удалить</a>
+                            </div>
+                        </div>
+                    </div>
                 {% endfor %}
-            {% else %}
-                <tr>
-                    <td colspan="7" class="text-center">Данных нет</td>
-                </tr>
             {% endif %}
-
-            </tbody>
-        </table>
+        </div>
+        <hr>
         <div class="row">
             <div class="col">
                 <p class="text-secondary fst-italic">
@@ -78,7 +73,7 @@
                 </p>
             </div>
         </div>
-    </div>
+
 {% endblock %}
 
 {% block scripts %}
