@@ -34,8 +34,10 @@ tables = [
 ]
 
 typesCert = [
-    ('personal', 'Физическое лицо'),
-    ('organdname', 'Юридическое лицо')
+    ('individual', 'Физическое лицо'),
+    ('personal', 'Должностное лицо'),
+    ('organdname', 'Юридическое лицо'),
+    ('organization', 'Юридическое лицо без ФИО')
 ]
 
 class Form(FlaskForm):
@@ -56,10 +58,10 @@ class SearchForm(FlaskForm):
 
 class SignForm(FlaskForm):
     # Форма для создания записи ЭЦП
-    owner = StringField('Владелец ключа')
+    # owner = StringField('Владелец ключа', validators=[DataRequired()])
     typeCertificate = SelectField('Тип сертификата', choices=typesCert, validators=[DataRequired()])
-    dateStart = DateField('Дата начала действия')
-    dateEnd = DateField('Дата окончания действия')
+    # dateStart = DateField('Дата начала действия', validators=[DataRequired()])
+    # dateEnd = DateField('Дата окончания действия', validators=[DataRequired()])
     fileCertificate = FileField('Файл сертификата (.cer)', validators=[
         FileRequired(),
         FileAllowed(['cer'], 'Разрешается только .cer')
