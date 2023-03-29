@@ -361,6 +361,8 @@ class Signs(db.Model):
     dateEnd = db.Column(db.Date)
     fileCertificate = db.Column(db.String)
     fileContainer = db.Column(db.String)
+    issuer = db.Column(db.String)
+    serial_number = db.Column(db.String)
 
     def __repr__(self):
         return '<Signs %r>' % self.id
