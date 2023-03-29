@@ -1,59 +1,54 @@
-from flask import render_template, request, redirect, flash, session, url_for, send_from_directory
+from flask import render_template, request, redirect, flash, session, url_for, send_from_directory, abort
 from app import app, db
 from app.models import Signs
 from app.forms import SignForm
-from datetime import datetime, date, timedelta
 from werkzeug.utils import secure_filename
-from .helpers import generateFilename
+from .helpers import generateFilename, parseCertificate
 import os
 
 @app.route('/sign')
 def page_sign_index():
-    records = Signs.query.all()
+    records = Signs.query.order_by(Signs.owner).all()
     return render_template('signs/index.html', records=records)
 
 @app.route('/sign/create')
 def page_sign_create():
     form = SignForm()
-    dateStart = date.today()
-    dateEnd = date.today() + timedelta(days=455)
-    return render_template('signs/create.html', form=form, dateStart=dateStart, dateEnd=dateEnd )
+    return render_template('signs/create.html', form=form )
 
 @app.route('/sign/<int:id>/edit')
 def page_sign_edit(id):
-    form = SignForm()
     record = Signs.query.get_or_404(id)
-    return render_template('signs/create.html', form=form, record=record )
+    form = SignForm(typeCertificate=record.type)
+    return render_template('signs/edit.html', form=form, record=record )
 
 @app.route('/sign/store', methods=['POST'])
 def sign_store():
     form = SignForm()
 
-    dateStart = datetime.strptime(request.form['dateStart'], "%Y-%m-%d")
-    dateEnd = datetime.strptime(request.form['dateEnd'], "%Y-%m-%d")
-    owner = request.form['owner']
     typeCertificate = request.form['typeCertificate']
     fileCertificate = generateFilename( secure_filename(form.fileCertificate.data.filename) )
     fileContainer = generateFilename( secure_filename(form.fileContainer.data.filename) )
 
     if form.validate_on_submit():
-        record = Signs(
-            owner = owner,
-            type = typeCertificate,
-            dateStart = dateStart,
-            dateEnd = dateEnd,
-            fileCertificate = fileCertificate,
-            fileContainer = fileContainer
-        )
+        request.files['fileCertificate'].save(os.path.join(app.config['UPLOAD_FOLDER'], fileCertificate))
+        request.files['fileContainer'].save(os.path.join(app.config['UPLOAD_FOLDER'], fileContainer))
 
-        try:
-            db.session.add(record)
-            db.session.commit()
-            request.files['fileCertificate'].save(os.path.join(app.config['UPLOAD_FOLDER'], fileCertificate))
-            request.files['fileContainer'].save(os.path.join(app.config['UPLOAD_FOLDER'], fileContainer))
-            flash("Запись успешно добавлена!", 'success')
-        except:
-            flash("Ошибка при добавлении!", 'danger')
+        parsedCert = parseCertificate(os.path.join(app.config['UPLOAD_FOLDER'], fileCertificate))
+
+        record = Signs(
+            owner = parsedCert['surname'] + ' ' + parsedCert['givenName'],
+            type = typeCertificate,
+            dateStart = parsedCert['dateStart'],
+            dateEnd = parsedCert['dateEnd'],
+            fileCertificate = fileCertificate,
+            fileContainer = fileContainer,
+            issuer = parsedCert['issuer'],
+            serial_number = parsedCert['serial_number']
+        )
+        db.session.add(record)
+        db.session.commit()
+        flash("Запись успешно добавлена!", 'success')
         return redirect(url_for('page_sign_index'))
 
     if form.errors != {}:
@@ -63,16 +58,50 @@ def sign_store():
     return render_template('signs/create.html', form=form)
 
 
-@app.route('/sign/<int:id>/update')
+@app.route('/sign/<int:id>/update', methods=['POST'])
 def sign_update(id):
     record = Signs.query.get_or_404(id)
-    pass
+    form = SignForm()
+
+    if request.method == 'POST':
+        if record:
+            db.session.delete(record)
+            db.session.commit()
+            if os.path.exists(os.path.join(app.config['UPLOAD_FOLDER'], record.fileCertificate)):
+                os.remove(os.path.join(app.config['UPLOAD_FOLDER'], record.fileCertificate))
+
+            if os.path.exists(os.path.join(app.config['UPLOAD_FOLDER'], record.fileContainer)):
+                os.remove(os.path.join(app.config['UPLOAD_FOLDER'], record.fileContainer))
+
+            typeCertificate = request.form['typeCertificate']
+            fileCertificate = generateFilename( secure_filename(form.fileCertificate.data.filename) )
+            fileContainer = generateFilename( secure_filename(form.fileContainer.data.filename) )
+
+            request.files['fileCertificate'].save(os.path.join(app.config['UPLOAD_FOLDER'], fileCertificate))
+            request.files['fileContainer'].save(os.path.join(app.config['UPLOAD_FOLDER'], fileContainer))
+
+            parsedCert = parseCertificate(os.path.join(app.config['UPLOAD_FOLDER'], fileCertificate))
+
+            record = Signs(
+                owner = parsedCert['surname'] + ' ' + parsedCert['givenName'],
+                type = typeCertificate,
+                dateStart = parsedCert['dateStart'],
+                dateEnd = parsedCert['dateEnd'],
+                fileCertificate = fileCertificate,
+                fileContainer = fileContainer,
+                issuer = parsedCert['issuer'],
+                serial_number = parsedCert['serial_number']
+            )
+            db.session.add(record)
+            db.session.commit()
+            flash("Запись успешно обновлена!", 'success')
+            return redirect(url_for('page_sign_index'))
+    abort(404)
 
 @app.route('/sign/<int:id>/delete')
 def sign_delete(id):
     record = Signs.query.get_or_404(id)
-
-    try:
+    if record:
         db.session.delete(record)
         db.session.commit()
         if os.path.exists(os.path.join(app.config['UPLOAD_FOLDER'], record.fileCertificate)):
@@ -81,11 +110,8 @@ def sign_delete(id):
         if os.path.exists(os.path.join(app.config['UPLOAD_FOLDER'], record.fileContainer)):
             os.remove(os.path.join(app.config['UPLOAD_FOLDER'], record.fileContainer))
         flash("Запись успешно удалена!", 'success')
-    except:
-        flash("Ошибка при удалении!", 'danger')
-
-    return redirect(url_for('page_sign_index'))
-
+        return redirect(url_for('page_sign_index'))
+    abort(404)
 
 @app.route('/uploads/<file>')
 def download_file(file):
