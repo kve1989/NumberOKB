@@ -12,13 +12,4 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 3000)
         }
     } )
-
-    let form = document.querySelector('#SearchFormFromAdminPage')
-    let select = form.querySelector('select')
-
-    select.addEventListener('change', (e) => {
-        form.submit();
-    })
-
-
 });
