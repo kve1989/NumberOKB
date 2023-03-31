@@ -73,9 +73,11 @@
                         <td>{{ record.mistakes }}</td>
                         <td colspan="2">
                             <a class="link text-primary" href="{{ url_for('page_data_edit', id=record.id) }}">
-                            <i class="fas fa-pencil-alt me-1"></i>Изменить</a>
+                                <i class="fas fa-pencil-alt me-1"></i>Изменить
+                            </a>
                             <a class="link text-danger" href="{{ url_for('data_delete', id=record.id) }}">
-                                <i class="fas fa-trash-alt me-1"></i>Удалить</a>
+                                <i class="fas fa-trash-alt me-1"></i>Удалить
+                            </a>
                         </td>
                     </tr>
                 {% endfor %}
