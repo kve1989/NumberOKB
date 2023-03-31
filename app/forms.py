@@ -41,7 +41,7 @@ typesCert = [
 ]
 
 class Form(FlaskForm):
-    # Определяем форму с полями и берем за основу
+    """Определяем форму с полями и берем за основу"""
     date = DateField('Дата', validators=[DataRequired()])
     sent = IntegerField('Отправлено')
     mistakes = IntegerField('Ошибки')
@@ -50,18 +50,15 @@ class Form(FlaskForm):
 
 
 class SearchForm(FlaskForm):
-    # Форма для поиска
+    """Форма для поиска"""
     table = SelectField('Таблица', choices=tables, validators=[DataRequired()])
     date = DateField('Начало', validators=[DataRequired()])
     date_end = DateField('Конец')
 
 
 class SignForm(FlaskForm):
-    # Форма для создания записи ЭЦП
-    # owner = StringField('Владелец ключа', validators=[DataRequired()])
+    """Форма для добавления ЭЦП"""
     typeCertificate = SelectField('Тип сертификата', choices=typesCert, validators=[DataRequired()])
-    # dateStart = DateField('Дата начала действия', validators=[DataRequired()])
-    # dateEnd = DateField('Дата окончания действия', validators=[DataRequired()])
     fileCertificate = FileField('Файл сертификата (.cer)', validators=[
         FileRequired(),
         FileAllowed(['cer'], 'Разрешается только .cer')

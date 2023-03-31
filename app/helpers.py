@@ -1,3 +1,7 @@
+"""
+Здесь храним функции-хелперы
+"""
+
 import hashlib
 from datetime import datetime
 from cryptography import x509
@@ -13,7 +17,7 @@ def parseCertificate(file):
     with open(file, "rb") as f:
         cert = x509.load_der_x509_certificate(f.read())
 
-    parsedFile = {
+    parsedCertificate = {
         'dateStart': cert.not_valid_before,
         'dateEnd': cert.not_valid_after,
         'serial_number': str(cert.serial_number),
@@ -23,4 +27,4 @@ def parseCertificate(file):
         'issuer': cert.issuer.get_attributes_for_oid(NameOID.COMMON_NAME)[0].value
     }
 
-    return parsedFile
+    return parsedCertificate
