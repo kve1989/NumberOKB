@@ -38,7 +38,7 @@
                             <div class="card-body lh-1">
                                 <!-- <p>{{ moment().unix() < moment(record.dateEnd).unix() }}</p>
                                 <p>{{ moment().unix()  }}</p> -->
-                                <p class="card-text">Действует с <b>{{ moment(record.dateStart).format('DD-MM-YYYY') }}</b> по <b>{{ moment(record.dateEnd).format('DD-MM-YYYY') }}</b></p>
+                                <p class="card-text">Действует с <b class="badge text-bg-success">{{ moment(record.dateStart).format('DD-MM-YYYY') }}</b> по <b class="badge text-bg-success">{{ moment(record.dateEnd).format('DD-MM-YYYY') }}</b></p>
                                 <p class="card-text">{{ record.serial_number }}</p>
                                 <p class="card-text">
                                     {% if record.type == 'personal' %}
