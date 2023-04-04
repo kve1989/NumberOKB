@@ -4,19 +4,6 @@
 {% block body %}
 
     <div class="container">
-
-        {% with messages = get_flashed_messages(with_categories=True) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <div class="alert alert-{{ category }} alert-dismissible fade show m-3 position-absolute top-0 end-0"
-                         role="alert">
-                        {{ message }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
-
         <div class="row">
             <div class="col">
                 <a class="btn btn-warning" aria-current="page" href="{{ url_for('page_sign_create') }}"
@@ -25,20 +12,27 @@
                 </a>
             </div>
         </div>
-
         <hr>
         <div class="row mt-2">
             {% if records %}
-                {% for record in records %}
+                {% for record in records|sort(attribute="owner") %}
                     <div class="col col-4">
-                        <div class="card mb-3">
+                        <div class="card mb-3 {{ 'border-danger' if record.leftdays < 30 else 'border-success'}}">
                             <div class="card-header d-flex align-items-center">
                                 <h5 class="card-title m-0"><b>{{ record.owner }}</b></h5>
                             </div>
                             <div class="card-body lh-1">
-                                <!-- <p>{{ moment().unix() < moment(record.dateEnd).unix() }}</p>
-                                <p>{{ moment().unix()  }}</p> -->
-                                <p class="card-text">Действует с <b class="badge text-bg-success">{{ moment(record.dateStart).format('DD-MM-YYYY') }}</b> по <b class="badge text-bg-success">{{ moment(record.dateEnd).format('DD-MM-YYYY') }}</b></p>
+                                <p class="card-text">
+                                    Действует с
+                                    <b class="badge {{ 'text-bg-danger' if record.leftdays < 30 else 'text-bg-success'}}">
+                                        {{ moment(record.dateStart).format('DD-MM-YYYY') }}
+                                    </b>
+                                    по
+                                    <b class="badge {{ 'text-bg-danger' if record.leftdays < 30 else 'text-bg-success'}}">
+                                        {{ moment(record.dateEnd).format('DD-MM-YYYY') }}
+                                    </b>
+                                </p>
+                                <p class="card-text">Осталось {{ record.leftdays }} дн.</p>
                                 <p class="card-text">{{ record.serial_number }}</p>
                                 <p class="card-text">
                                     {% if record.type == 'personal' %}
@@ -53,12 +47,18 @@
                                 </p>
                                 <p class="card-text">Выдан: {{ record.issuer }}</p>
                                 <p class="card-text">
+                                    |
                                     <a href="{{ url_for('download_file', file=record.fileCertificate) }}">Сертификат</a>
                                     |
                                     <a href="{{ url_for('download_file', file=record.fileContainer) }}">Контейнер</a>
+                                    |
                                 </p>
-                                <a href="{{ url_for('page_sign_edit', id=record.id) }}" class="btn btn-sm btn-warning"><i class="fas fa-pencil-alt me-1"></i>Изменить</a>
-                                <a href="{{ url_for('sign_delete', id=record.id) }}" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt me-1"></i>Удалить</a>
+                                <a href="{{ url_for('page_sign_edit', id=record.id) }}" class="btn btn-sm btn-warning">
+                                    <i class="fas fa-pencil-alt me-1"></i>Изменить
+                                </a>
+                                <a href="{{ url_for('sign_delete', id=record.id) }}" class="btn btn-sm btn-danger">
+                                    <i class="fas fa-trash-alt me-1"></i>Удалить
+                                </a>
                             </div>
                         </div>
                     </div>

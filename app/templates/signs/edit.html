@@ -1,5 +1,5 @@
 {% extends 'layouts/base.html' %}
-{% block title %} Добавление {% endblock %}
+{% block title %} Измение {% endblock %}
 
 {% block body %}
 <div class="container">
@@ -10,7 +10,7 @@
 
                 {% include "signs/components/form.html" %}
 
-                <button class="btn btn-primary" type="submit"><i class="far fa-save me-1"></i>Обновить</button>
+                <button class="btn btn-success" type="submit"><i class="far fa-save me-1"></i>Изменить</button>
                 <a class="btn btn-secondary" href="{{ url_for('page_sign_index') }}">Отмена</a>
             </form>
         </div>
