@@ -364,5 +364,10 @@ class Signs(db.Model):
     issuer = db.Column(db.String)
     serial_number = db.Column(db.String)
 
+    @property
+    def leftdays(self):
+        from datetime import date
+        return int((self.dateEnd - date.today()).days)
+
     def __repr__(self):
         return '<Signs %r>' % self.id

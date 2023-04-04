@@ -8,7 +8,7 @@ import os
 
 @app.route('/sign')
 def page_sign_index():
-    records = Signs.query.order_by(Signs.owner).all()
+    records = Signs.query.all()
     return render_template('signs/index.html', records=records)
 
 @app.route('/sign/create')
