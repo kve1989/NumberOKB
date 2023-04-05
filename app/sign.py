@@ -9,18 +9,18 @@ import os
 @app.route('/sign')
 def page_sign_index():
     records = Signs.query.all()
-    return render_template('signs/index.html', records=records)
+    return render_template('sign/index.html', records=records)
 
 @app.route('/sign/create')
 def page_sign_create():
     form = SignForm()
-    return render_template('signs/create.html', form=form )
+    return render_template('sign/create.html', form=form )
 
 @app.route('/sign/<int:id>/edit')
 def page_sign_edit(id):
     record = Signs.query.get_or_404(id)
     form = SignForm(typeCertificate=record.type)
-    return render_template('signs/edit.html', form=form, record=record )
+    return render_template('sign/edit.html', form=form, record=record )
 
 @app.route('/sign/store', methods=['POST'])
 def sign_store():
@@ -55,7 +55,7 @@ def sign_store():
         for err_msg in form.errors.values():
             flash(err_msg, 'danger')
 
-    return render_template('signs/create.html', form=form)
+    return render_template('sign/create.html', form=form)
 
 
 @app.route('/sign/<int:id>/update', methods=['POST'])
