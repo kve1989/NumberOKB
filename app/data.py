@@ -19,7 +19,8 @@ def page_data_index():
         selected_table = session['table'] = tables[0][0]
 
     if form.is_submitted():
-        """ В сессию и переменную складываем имя таблицы, которую пользователь выбрал на странице"""
+        """ В сессию и переменную складываем имя таблицы,
+        которую пользователь выбрал на странице"""
         selected_table = form.table.data
         session['table'] = form.table.data
 
