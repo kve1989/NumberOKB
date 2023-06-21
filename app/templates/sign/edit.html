@@ -4,7 +4,7 @@
 {% block body %}
 <div class="container">
     <div class="card mt-3">
-        <div class="card-header">Измение записи {{ record.owner }}</div>
+        <div class="card-header">Измение записи <span class="text-bg-primary p-1 rounded-1">{{ record.owner }}</span></div>
         <div class="card-body">
             <form action="{{ url_for('sign_update', id=record.id) }}" method="POST" enctype=multipart/form-data>
 
