@@ -2,12 +2,13 @@ FROM python:3-alpine
 
 WORKDIR /app
 
-ENV PYTHONDONTWRITEBYCODE=1 \
-    PYTHONUNBUFFERED=1
-
 COPY . .
 
-RUN python -m pip install --upgrade pip && python -m pip install -r requirements.txt && python create_db.py
+ENV PYTHONDONTWRITEBYCODE=1
+ENV PYTHONUNBUFFERED=1
+
+RUN python -m pip install --upgrade pip && python -m pip install -r requirements.txt
+RUN flask db init && flask db migrate -m "Init migrations" && flask db upgrade
 
 EXPOSE 5000
 

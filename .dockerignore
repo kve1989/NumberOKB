@@ -23,6 +23,10 @@
 **/db.db
 **/obj
 **/venv
+**/.venv
+**/env
+**/.env
+**/migrations
 **/secrets.dev.yaml
 **/values.dev.yaml
 README.md
