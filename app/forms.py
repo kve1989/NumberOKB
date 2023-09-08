@@ -67,3 +67,6 @@ class SignForm(FlaskForm):
         FileRequired(),
         FileAllowed(['pfx', 'reg'], 'Разрешается только .pfx или .reg')
     ])
+
+class TablesForm(FlaskForm):
+    table = StringField('Название таблицы', validators=[DataRequired()])

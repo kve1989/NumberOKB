@@ -1,5 +1,24 @@
 from app import db
 
+class Tables(db.Model):
+    __tablename__ = 'Tables'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)
+
+    def __repr__(self):
+        return '<Table %r>' % self.id
+
+# class Datas(db.Model):
+#     __tablename__ = 'Datas'
+#     id = db.Column(db.Integer, primary_key=True)
+#     table_id = db.Column(db.Integer, db.ForeignKey('Tables.id'))
+#     date = db.Column(db.Date)
+#     done = db.Column(db.Integer, nullable=True, default=0)
+#     sent = db.Column(db.Integer, nullable=True, default=0)
+#     mistakes = db.Column(db.Integer, nullable=True, default=0)
+
+#     def __repr__(self):
+#         return '<Data %r>' % self.id
 
 # 1. Протокол консультации
 class ProtocConsult(db.Model):

@@ -1,0 +1,19 @@
+{% extends 'layouts/base.html' %}
+{% block title %} Измение {% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="card mt-3">
+        <div class="card-header">Измение записи {{ record.owner }}</div>
+        <div class="card-body">
+            <form action="{{ url_for('table_update', id=record.id) }}" method="POST" enctype=multipart/form-data>
+
+                {% include "table/components/form.html" %}
+
+                <button class="btn btn-success" type="submit"><i class="far fa-save me-1"></i>Изменить</button>
+                <a class="btn btn-secondary" href="{{ url_for('page_table_index') }}">Отмена</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
