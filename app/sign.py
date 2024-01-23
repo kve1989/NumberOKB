@@ -1,7 +1,7 @@
 from flask import render_template, request, redirect, flash, session, url_for, send_from_directory, abort
-from app import app, db
-from app.models import Signs
-from app.forms import SignForm
+from . import app, db
+from .models import Signs
+from .forms import SignForm
 from werkzeug.utils import secure_filename
 from .helpers import generateFilename, parseCertificate
 import os

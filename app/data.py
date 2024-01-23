@@ -1,8 +1,8 @@
 from flask import render_template, request, redirect, flash, session, url_for
-from app import app, db
-from app.models import *
-from app.forms import Form, SearchForm, tables
-from app.views import default_date, get_date
+from . import app, db
+from .models import *
+from .forms import Form, SearchForm, tables
+from .views import default_date, get_date
 from datetime import datetime
 
 @app.route("/data", methods=["POST", "GET"])
