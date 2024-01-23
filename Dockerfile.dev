@@ -1,0 +1,18 @@
+FROM python:3.11-alpine
+
+WORKDIR /app
+
+COPY . .
+
+ENV PYTHONDONTWRITEBYCODE=1 \
+    PYTHONUNBUFFERED=1
+
+RUN python -m pip --proxy http://192.168.2.30:3128 install --upgrade pip && \
+    python -m pip install --proxy http://192.168.2.30:3128 -r requirements.txt && \
+    flask db init && \
+    flask db migrate -m "Init migrations" && \
+    flask db upgrade
+
+EXPOSE 5000
+
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "run:app"]
