@@ -1,10 +1,10 @@
 from flask import render_template, request, redirect, flash, session, url_for, send_from_directory, abort
+from werkzeug.utils import secure_filename
+import os
 from . import app, db
 from .models import Signs
 from .forms import SignForm
-from werkzeug.utils import secure_filename
 from .helpers import generateFilename, parseCertificate
-import os
 
 @app.route('/sign')
 def page_sign_index():

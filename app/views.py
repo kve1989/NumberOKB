@@ -1,8 +1,8 @@
 from flask import render_template, session
-from app import app, db
-from app.models import *
-from app.forms import SearchForm, tables
 from datetime import date, timedelta
+from . import app, db
+from .models import *
+from .forms import SearchForm, tables
 
 def get_date():
     return date.today() - timedelta(days=1)
