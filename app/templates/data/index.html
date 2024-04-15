@@ -4,20 +4,20 @@
     {% for table in tables %}
         {% if request.form.data or session['table'] in table %}
             {{ table[1] }}
-        {%endif%}
+        {% endif %}
     {% endfor %}
 {% endblock %}
 
 {% block body %}
 
-    <div class="container">
-        <div class="card mt-2 mb-2">
+    <section class="section">
+        <div class="card my-2">
             <div class="card-body">
                 <form id="SearchFormFromAdminPage" action=" {{ url_for('page_data_index') }} " method="post">
                     {{ form.csrf_token() }}
 
                     <div class="row mb-2">
-                        <div class="col">
+                        <div class="col-11">
                             <select class="form-select fw-bold" name="table" data-bs-toggle="tooltip" data-bs-placement="bottom"
                                 title="Выбрать таблицу">
                                 {% for table in tables %}
@@ -32,26 +32,26 @@
                                 {% endfor %}
                             </select>
                         </div>
+                        <div class="col-1">
+                            <a class="btn btn-warning w-auto" aria-current="page" href="{{ url_for('page_data_create') }}"
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="Добавить новую запись">
+                                <i class="far fa-plus"></i>
+                            </a>
+                        </div>
                     </div>
                 </form>
             </div>
         </div>
-
+        </div>
         <table class="table table-hover mt-2">
             <thead>
-            <tr class="table-light">
-                <th class="col align-middle"><i class="far fa-calendar-alt me-1"></i> Дата</th>
-                <th class="col align-middle"><i class="fas fa-check me-1 text-success"></i> Выполнено</th>
-                <th class="col align-middle"><i class="fas fa-paper-plane me-1 text-primary"></i> Отправлено</th>
-                <th class="col align-middle"><i class="fas fa-exclamation-circle me-1 text-danger"></i> Ошибки</th>
-                <th class="col align-middle"><i class="fas fa-bolt me-1 text-secondary"></i> Действия</th>
-                <th class="col d-flex justify-content-end">
-                    <a class="btn btn-warning" aria-current="page" href="{{ url_for('page_data_create') }}"
-                        data-bs-toggle="tooltip" data-bs-placement="top" title="Добавить новую запись">
-                        <i class="far fa-plus"></i>
-                    </a>
-                </th>
-            </tr>
+                <tr class="table-light">
+                    <th class="col align-middle"><i class="far fa-calendar-alt me-1"></i> Дата</th>
+                    <th class="col align-middle"><i class="fas fa-check me-1 text-success"></i> Выполнено</th>
+                    <th class="col align-middle"><i class="fas fa-paper-plane me-1 text-primary"></i> Отправлено</th>
+                    <th class="col align-middle"><i class="fas fa-exclamation-circle me-1 text-danger"></i> Ошибки</th>
+                    <th class="col align-middle"><i class="fas fa-bolt me-1 text-secondary"></i> Действия</th>
+                </tr>
             </thead>
             <tbody>
             {% if records %}
@@ -61,8 +61,8 @@
                         <td>{{ record.done }}</td>
                         <td>{{ record.sent }}</td>
                         <td>{{ record.mistakes }}</td>
-                        <td colspan="2">
-                            <a class="link text-primary" href="{{ url_for('page_data_edit', id=record.id) }}">
+                        <td>
+                            <a class="link text-primary me-2" href="{{ url_for('page_data_edit', id=record.id) }}">
                                 <i class="fas fa-pencil-alt me-1"></i>Изменить
                             </a>
                             <a class="link text-danger" href="{{ url_for('data_delete', id=record.id) }}">
@@ -73,7 +73,7 @@
                 {% endfor %}
             {% else %}
                 <tr>
-                    <td colspan="6" class="text-center">Данных нет</td>
+                    <td colspan="5" class="text-center">Данных нет</td>
                 </tr>
             {% endif %}
 
@@ -88,14 +88,12 @@
             {% endif %}
             </tbody>
         </table>
-        <div class="row">
-            <div class="col">
-                <p class="text-secondary fst-italic">
-                    Всего записей: {{ records|length if records else '0'}}
-                </p>
-            </div>
+        <div class="col">
+            <p class="text-secondary fst-italic">
+                Всего записей: {{ records|length if records else '0'}}
+            </p>
         </div>
-    </div>
+    </section>
 {% endblock %}
 
 {% block scripts %}
