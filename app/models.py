@@ -1,12 +1,12 @@
-from app import db
+from . import db
 
-class Tables(db.Model):
-    __tablename__ = 'Tables'
+class DocType(db.Model):
+    __tablename__ = 'DocType'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
 
     def __repr__(self):
-        return '<Table %r>' % self.id
+        return '<DocType %r>' % self.id
 
 # 1. Протокол консультации
 class ProtocConsult(db.Model):

@@ -1,0 +1,10 @@
+{{ form.csrf_token() }}
+
+<div class="row mb-2">
+    <div class="col">
+        <div class="mb-2">
+            {{ form.doctype.label(class="form-label") }}
+            {{ form.doctype(class="form-control", value=record.name if record) }}
+        </div>
+    </div>
+</div>
