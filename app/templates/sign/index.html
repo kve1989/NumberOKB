@@ -15,11 +15,11 @@
         <div class="row mt-2">
             {% if records %}
                 {% for record in records|sort(attribute="owner") %}
-                    <div class="col-xxl-6 col-md-6">
-                        <div class="card mb-3 {{ 'border-danger' if record.leftdays < 30 else 'border-success'}}">
+                    <div class="col-xxl-4 col-md-6">
+                        <div class="card mb-3 {{ 'border-danger' if record.leftdays < 30 else 'border-success'}} rounded-0">
                             <div class="card-header d-flex align-items-center" data-bs-toggle="collapse" href="#collapse-{{ record.id }}" role="button" aria-expanded="false" aria-controls="collapse-{{ record.id }}">
                                 <h5 class="card-title m-0">
-                                    <b>{{ record.owner }}</b>
+                                    <b>{{ record.owner|truncate(25, True) }}</b>
                                     <b class="badge {{ 'text-bg-danger' if record.leftdays < 30 else 'text-bg-success' }}">
                                         {{ record.leftdays }} дн.
                                     </b>
@@ -98,7 +98,7 @@
                 </div>
             </form>
         </div>
-        </div>
+    </div>
 
 {% endblock %}
 

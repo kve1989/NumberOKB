@@ -4,40 +4,44 @@
 
 {% block body %}
     <div class="container">
-        <div class="d-flex align-items-center">
-            <h1 class="m-0">
-                Данные за {{ moment(date).format("DD.MM.YYYY") }} {{ "по " + moment(end_date).format("DD.MM.YYYY")|e if end_date else ''}}
-            </h1>
-            <button class="btn btn-info ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
+        <div class="row">
+            <div class="d-flex align-items-center px-0">
+                <h1 class="m-0 p-0">
+                    Данные за {{ moment(date).format("DD.MM.YYYY") }} {{ "по " + moment(end_date).format("DD.MM.YYYY")|e if
+                    end_date else ''}}
+                </h1>
+                <button class="btn btn-info ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
                     aria-expanded="false" aria-controls="collapseOne"><i class="far fa-filter"></i></button>
+            </div>
         </div>
 
-
-        <div class="accordion accordion-flush mt-2 mb-2">
-            <div class="accordion-item">
-                <div id="collapseOne" class="accordion-collapse collapse  {{ 'show' if request.form.date }}"
-                     aria-labelledby="headingOne"
-                     data-bs-parent="#accordionExample">
-                    <div class="card">
-                        <div class="card-body">
-                            <form class="" action="/" method="post">
-                                {{ form.csrf_token() }}
-                                <fieldset>
-                                    <div class="row mb-2">
-                                        <div class="col-2 ">
-                                            {{ form.date.label(class="form-label m-0") }}
-                                            {{ form.date(class="form-control") }}
+        <div class="row">
+            <div class="accordion accordion-flush my-2 px-0">
+                <div class="accordion-item">
+                    <div id="collapseOne" class="accordion-collapse collapse  {{ 'show' if request.form.date }}"
+                        aria-labelledby="headingOne"
+                        data-bs-parent="#accordionExample">
+                        <div class="card">
+                            <div class="card-body">
+                                <form class="" action="/" method="post">
+                                    {{ form.csrf_token() }}
+                                    <fieldset>
+                                        <div class="row mb-2">
+                                            <div class="col-2 ">
+                                                {{ form.date.label(class="form-label m-0") }}
+                                                {{ form.date(class="form-control") }}
+                                            </div>
+                                            <div class="col-2 ">
+                                                {{ form.date_end.label(class="form-label m-0") }}
+                                                {{ form.date_end(class="form-control") }}
+                                            </div>
                                         </div>
-                                        <div class="col-2 ">
-                                            {{ form.date_end.label(class="form-label m-0") }}
-                                            {{ form.date_end(class="form-control") }}
-                                        </div>
-                                    </div>
-                                </fieldset>
-                                <button class="btn btn-success" type="submit">
-                                    <i class="far fa-filter me-1"></i>Отобрать
-                                </button>
-                            </form>
+                                    </fieldset>
+                                    <button class="btn btn-success" type="submit">
+                                        <i class="far fa-filter me-1"></i>Отобрать
+                                    </button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -45,32 +49,26 @@
         </div>
 
         <div class="row">
-            {% for item in all_data %}
-                <div class="col-4">
-                    <div class="card mb-3">
-                        <div class="card-header"><strong>{{ item.name }}</strong>
-                        </div>
-                        <div class="card-body">
-                            <table class="table table-bordered">
-                                <thead>
-                                <tr>
-                                    <th class="col">Выполнено</th>
-                                    <th class="col">Отправлено</th>
-                                    <th class="col">Ошибки</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr class="table-warning">
-                                    <td>{{ item.data|sum(attribute="done") }}</td>
-                                    <td>{{ item.data|sum(attribute="sent") }}</td>
-                                    <td>{{ item.data|sum(attribute="mistakes") }}</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th class="col">Документ</th>
+                        <th class="col">Выполнено</th>
+                        <th class="col">Отправлено</th>
+                        <th class="col">Ошибки</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in all_data %}
+                        <tr>
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.data|sum(attribute="done") }}</td>
+                            <td>{{ item.data|sum(attribute="sent") }}</td>
+                            <td>{{ item.data|sum(attribute="mistakes") }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
 

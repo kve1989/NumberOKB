@@ -2,11 +2,11 @@
 {% block title %} Добавление {% endblock %}
 
 {% block body %}
-<div class="container">
+<section class="section">
     <div class="card mt-3">
+        <form action="{{ url_for('data_store') }}" method="POST">
         <div class="card-header">Добавление записи</div>
         <div class="card-body">
-            <form action="{{ url_for('data_store') }}" method="POST">
                 <div class="row mb-2">
                     <div class="col">
                         <select class="form-select" name="table" id="">
@@ -19,11 +19,12 @@
                     </div>
                 </div>
                 {% include "data/components/form.html" %}
-
-                <button class="btn btn-primary" type="submit"><i class="far fa-save me-1"></i>Создать</button>
-                <a class="btn btn-secondary" href="{{ url_for('page_data_index') }}">Отмена</a>
-            </form>
-        </div>
+            </div>
+            <div class="card-footer d-flex justify-content-end">
+                <a class="btn btn-secondary me-2" href="{{ url_for('page_data_index') }}">Отмена</a>
+                <button class="btn btn-success" type="submit"><i class="far fa-save me-1"></i>Добавить</button>
+            </div>
+        </form>
     </div>
-</div>
+</section>
 {% endblock %}
