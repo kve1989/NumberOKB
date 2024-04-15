@@ -3,7 +3,7 @@
 
 {% block body %}
 
-    <div class="container">
+    <section class="section">
         <div class="row">
             <div class="col">
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -15,7 +15,7 @@
         <div class="row mt-2">
             {% if records %}
                 {% for record in records|sort(attribute="owner") %}
-                    <div class="col col-6">
+                    <div class="col-xxl-6 col-md-6">
                         <div class="card mb-3 {{ 'border-danger' if record.leftdays < 30 else 'border-success'}}">
                             <div class="card-header d-flex align-items-center" data-bs-toggle="collapse" href="#collapse-{{ record.id }}" role="button" aria-expanded="false" aria-controls="collapse-{{ record.id }}">
                                 <h5 class="card-title m-0">
@@ -79,7 +79,7 @@
                 </p>
             </div>
         </div>
-    </div>
+    </section>
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <form action="{{ url_for('sign_store') }}" method="POST" enctype=multipart/form-data>
