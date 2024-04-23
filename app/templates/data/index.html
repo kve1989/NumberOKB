@@ -11,7 +11,7 @@
 {% block body %}
 
     <section class="section">
-        <div class="card my-2">
+        <div class="card mb-2">
             <div class="card-body">
                 <form id="SearchFormFromAdminPage" action=" {{ url_for('page_data_index') }} " method="post">
                     {{ form.csrf_token() }}

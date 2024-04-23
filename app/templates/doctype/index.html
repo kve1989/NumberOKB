@@ -10,34 +10,34 @@
         <hr>
         <table class="table table-sm table-hover mt-2">
             <thead>
-            <tr class="table-light">
-                <th class="col align-middle">#</th>
-                <th class="col align-middle" colspan="2">Название</th>
-            </tr>
+                <tr class="table-light">
+                    <th class="col align-middle">#</th>
+                    <th class="col align-middle" colspan="2">Название</th>
+                </tr>
             </thead>
             <tbody>
-        {% if records %}
-            {% for record in records %}
+            {% if records %}
+                {% for record in records %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ record.name }}</td>
+                        <!-- <td class="d-flex justify-content-end  align-items-center"> -->
+                        <td style="text-align: end">
+                            <a href="{{ url_for('page_table_edit', id=record.id) }}" class="link text-primary me-2">
+                                <i class="fas fa-pencil-alt me-1"></i>Изменить
+                            </a>
+                            <a href="{{ url_for('table_delete', id=record.id) }}" class="link text-danger">
+                                <i class="fas fa-trash-alt me-1"></i>Удалить
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% else %}
                 <tr>
-                    <td>{{ loop.index }}</td>
-                    <td>{{ record.name }}</td>
-                    <!-- <td class="d-flex justify-content-end  align-items-center"> -->
-                    <td style="text-align: end">
-                        <a href="{{ url_for('page_table_edit', id=record.id) }}" class="link text-primary me-2">
-                            <i class="fas fa-pencil-alt me-1"></i>Изменить
-                        </a>
-                        <a href="{{ url_for('table_delete', id=record.id) }}" class="link text-danger">
-                            <i class="fas fa-trash-alt me-1"></i>Удалить
-                        </a>
-                    </td>
+                    <td colspan="2" class="text-center">Данных нет</td>
                 </tr>
-            {% endfor %}
-        {% else %}
-            <tr>
-                <td colspan="2" class="text-center">Данных нет</td>
-            </tr>
-        {% endif %}
-        </tbody>
+            {% endif %}
+            </tbody>
         </table>
         <p class="text-secondary fst-italic p-0">
             Всего записей: {{ records|length if records else '0'}}
@@ -62,7 +62,6 @@
             </form>
         </div>
     </div>
-
 {% endblock %}
 
 {% block scripts %}
