@@ -1,9 +1,7 @@
 from flask import render_template, request, redirect, flash, url_for, send_from_directory, abort
-from . import app, db, admin_page
+from . import app, db
 from .models import DocType
 from .forms import DocTypeForm
-
-app.register_blueprint(admin_page, url_prefix='/administration')
 
 @app.route('/doctype')
 def page_table_index():
