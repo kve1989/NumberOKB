@@ -30,12 +30,12 @@
         />
     </head>
     <body>
+        {{ request }}
         <!-- ======= Header ======= -->
         <header id="header" class="header fixed-top d-flex align-items-center">
 
             <div class="d-flex align-items-center justify-content-between">
                 <a href="index.html" class="logo d-flex align-items-center">
-                    <img src="assets/img/logo.png" alt="">
                     <span class="d-none d-lg-block">Numbers</span>
                 </a>
                 <i class="bi bi-list toggle-sidebar-btn"></i>
@@ -114,10 +114,9 @@
                     </a>
                 </li>
                 <!-- End Dashboard Nav -->
-
                 <li class="nav-item">
                     <a
-                        class="nav-link collapsed"
+                        class="nav-link {{ '' if active_page == 'doctype' else 'collapsed' }}"
                         data-bs-target="#forms-nav"
                         data-bs-toggle="collapse"
                         href="#"
@@ -127,11 +126,11 @@
                     </a>
                     <ul
                         id="forms-nav"
-                        class="nav-content collapse"
+                        class="nav-content collapse {{ 'show' if active_page == 'doctype' }}"
                         data-bs-parent="#sidebar-nav"
                     >
                         <li>
-                            <a href="{{ url_for('page_table_index')}}">
+                            <a class="{{ 'active' if active_page == 'doctype' }}" href="{{ url_for('page_table_index')}}">
                                 <i class="bi bi-circle"></i
                                 ><span>Типы документов</span>
                             </a>
@@ -142,14 +141,14 @@
                 <li class="nav-heading">Навигация</li>
 
                 <li class="nav-item">
-                    <a class="nav-link collapsed" href="{{ url_for('page_sign_index')}}">
+                    <a class="nav-link {{ '' if active_page == 'sign' else 'collapsed' }}" href="{{ url_for('page_sign_index')}}">
                         <i class="bi bi-person"></i>
                         <span>ЭЦП</span>
                     </a>
                 </li>
                 <!-- End Profile Page Nav -->
                 <li class="nav-item">
-                    <a class="nav-link collapsed" href="{{ url_for('page_data_index')}}">
+                    <a class="nav-link {{ '' if active_page == 'data' else 'collapsed' }}" href="{{ url_for('page_data_index')}}">
                         <i class="bi bi-list-ol"></i>
                         <span>Цифры</span>
                     </a>
