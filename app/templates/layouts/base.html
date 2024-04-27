@@ -30,7 +30,6 @@
         />
     </head>
     <body>
-        {{ request }}
         <!-- ======= Header ======= -->
         <header id="header" class="header fixed-top d-flex align-items-center">
 
@@ -157,6 +156,7 @@
             </ul>
         </aside>
         <!-- End Sidebar-->
+        <!-- ======= Main ======= -->
         <main id="main" class="main">
             <div class="position-relative">
                 {% with messages = get_flashed_messages(with_categories=True) %}
@@ -177,6 +177,7 @@
                 {% block body %}{% endblock %}
             </div>
         </main>
+        <!-- End Main-->
 
         {% block scripts %}
             <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
