@@ -26,6 +26,12 @@ def sign_store():
 
         parsedCert = parseCertificate(os.path.join(app.config['UPLOAD_FOLDER'], fileCertificate))
 
+        """Проверка на существование имеющегося сертификата в БД по серийному номеру"""
+        duplicate_cert = Signs.query.filter_by(serial_number=parsedCert['serial_number']).one_or_404()
+        if duplicate_cert:
+            flash("Такой сертификат уже есть в хранилице", 'danger')
+            return redirect(url_for('page_sign_index'))
+
         record = Signs(
             owner = parsedCert['surname'] + ' ' + parsedCert['givenName'],
             type = typeCertificate,
