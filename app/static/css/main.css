@@ -1,6 +1,9 @@
 body {
+    font-family: "Open Sans", sans-serif;
     background: #f6f9ff;
+    color: #444444;
 }
+
 main {
     margin-left: 300px;
 }
@@ -400,4 +403,14 @@ main {
 
 .sidebar-nav .nav-content a.active i {
   background-color: #4154f1;
+}
+
+.pagetitle {
+    margin-bottom: 10px;
+}
+.pagetitle h1 {
+    font-size: 24px;
+    margin-bottom: 0;
+    font-weight: 600;
+    color: #012970;
 }
