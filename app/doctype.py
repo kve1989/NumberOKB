@@ -7,7 +7,7 @@ from .forms import DocTypeForm
 def page_table_index():
     records = DocType.query.all()
     form = DocTypeForm()
-    return render_template('doctype/index.html', records=records, form=form)
+    return render_template('doctype/index.html', page_title='Типы документов', records=records, form=form)
 
 @app.route('/doctype/create')
 def page_table_create():

@@ -10,7 +10,7 @@ from .helpers import generateFilename, parseCertificate
 def page_sign_index():
     records = Signs.query.all()
     form = SignForm()
-    return render_template('sign/index.html', records=records, form=form)
+    return render_template('sign/index.html', page_title='ЭЦП', records=records, form=form)
 
 @app.route('/sign/store', methods=['POST'])
 def sign_store():
@@ -24,10 +24,11 @@ def sign_store():
         request.files['fileCertificate'].save(os.path.join(app.config['UPLOAD_FOLDER'], fileCertificate))
         request.files['fileContainer'].save(os.path.join(app.config['UPLOAD_FOLDER'], fileContainer))
 
+        """Здесь храним распарсенный сертификат"""
         parsedCert = parseCertificate(os.path.join(app.config['UPLOAD_FOLDER'], fileCertificate))
 
         """Проверка на существование имеющегося сертификата в БД по серийному номеру"""
-        duplicate_cert = Signs.query.filter_by(serial_number=parsedCert['serial_number']).one_or_404()
+        duplicate_cert = Signs.query.filter_by(serial_number=parsedCert['serial_number']).one_or_none()
         if duplicate_cert:
             flash("Такой сертификат уже есть в хранилице", 'danger')
             return redirect(url_for('page_sign_index'))
@@ -50,8 +51,6 @@ def sign_store():
     if form.errors != {}:
         for err_msg in form.errors.values():
             flash(err_msg, 'danger')
-
-    return render_template('sign/create.html', form=form)
 
 @app.route('/sign/<int:id>/delete')
 def sign_delete(id):
