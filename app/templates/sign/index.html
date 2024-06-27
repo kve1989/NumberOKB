@@ -4,7 +4,7 @@
 {% block body %}
 
     <section class="section">
-        <div class="row">
+        <div class="row mb-1">
             <div class="col">
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     <i class="far fa-plus"></i>
@@ -18,7 +18,7 @@
                     <div class="col-xxl-4 col-md-6">
                         <div class="card mb-3 {{ 'border-danger' if record.leftdays < 30 else 'border-success'}} rounded-0">
                             <div class="card-header d-flex align-items-center" data-bs-toggle="collapse" href="#collapse-{{ record.id }}" role="button" aria-expanded="false" aria-controls="collapse-{{ record.id }}">
-                                <h5 class="card-title m-0">
+                                <h5 class="card-title m-0 d-flex justify-content-between w-100">
                                     <b>{{ record.owner|truncate(25, True) }}</b>
                                     <b class="badge {{ 'text-bg-danger' if record.leftdays < 30 else 'text-bg-success' }}">
                                         {{ record.leftdays }} дн.
