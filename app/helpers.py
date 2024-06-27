@@ -18,8 +18,8 @@ def parseCertificate(file):
         cert = x509.load_der_x509_certificate(f.read())
 
     parsedCertificate = {
-        'dateStart': cert.not_valid_before,
-        'dateEnd': cert.not_valid_after,
+        'dateStart': cert.not_valid_before_utc.date(),
+        'dateEnd': cert.not_valid_after_utc.date(),
         'serial_number': str(cert.serial_number),
         'commonName': cert.subject.get_attributes_for_oid(NameOID.COMMON_NAME)[0].value,
         'givenName': cert.subject.get_attributes_for_oid(NameOID.GIVEN_NAME)[0].value,
