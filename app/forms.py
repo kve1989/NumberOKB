@@ -2,6 +2,9 @@ from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired, FileAllowed
 from wtforms import StringField, DateField, IntegerField, SelectField
 from wtforms.validators import DataRequired
+from .models import DocType
+from . import db
+import sqlalchemy as sa
 
 tables = [
     # ('ProtocConsult', 'Протокол консультации'),
@@ -70,3 +73,18 @@ class SignForm(FlaskForm):
 
 class DocTypeForm(FlaskForm):
     doctype = StringField('Название таблицы', validators=[DataRequired()])
+
+class DataOnDocsForm(FlaskForm):
+    query = db.session.scalars(sa.select(DocType)).all()
+    doctypes = [['', '']]
+    selected_doctype = 0
+    for p in query:
+        doctypes.append([p.id, p.name])
+    # if request.args.get('doctype'):
+    #     selected_doctype = request.args.get('doctype')
+
+    date = DateField('Дата', validators=[DataRequired()])
+    sent = IntegerField('Отправлено', validators=[DataRequired()])
+    mistakes = IntegerField('Ошибки', validators=[DataRequired()])
+    done = IntegerField('Выполнено', validators=[DataRequired()])
+    doctype = SelectField('Документ', choices=doctypes, default=selected_doctype, validators=[DataRequired()])

@@ -1,28 +1,29 @@
-from flask import render_template, request, redirect, flash, url_for, send_from_directory, abort
+from flask import render_template, request, redirect, flash, url_for, abort, Blueprint
 from . import app, db
 from .models import DocType
 from .forms import DocTypeForm
 
-@app.route('/doctype')
-def page_table_index():
+doctype = Blueprint('doctype', __name__, url_prefix='/doctype')
+
+@doctype.route('/')
+def index():
     records = DocType.query.all()
     form = DocTypeForm()
     return render_template('doctype/index.html', page_title='Типы документов', records=records, form=form)
 
-@app.route('/doctype/create')
-def page_table_create():
+@doctype.route('/create')
+def create():
     form = DocTypeForm()
     return render_template('doctype/create.html', form=form)
 
-
-@app.route('/doctype/edit/<int:id>')
-def page_table_edit(id):
+@doctype.route('/edit/<int:id>')
+def edit(id):
     form = DocTypeForm()
     record = DocType.query.get_or_404(id)
     return render_template('doctype/edit.html', form=form, record=record)
 
-@app.route('/doctype/store', methods=['POST'])
-def table_store():
+@doctype.route('/store', methods=['POST'])
+def store():
     form = DocTypeForm()
 
     if form.validate_on_submit():
@@ -32,7 +33,7 @@ def table_store():
         db.session.add(record)
         db.session.commit()
         flash("Запись успешно добавлена!", 'success')
-        return redirect(url_for('page_table_index'))
+        return redirect(url_for('doctype.index'))
 
     if form.errors != {}:
         for err_msg in form.errors.values():
@@ -40,8 +41,8 @@ def table_store():
 
     return render_template('doctype/create.html', form=form)
 
-@app.route('/doctype/<int:id>/update', methods=['POST'])
-def table_update(id):
+@doctype.route('/<int:id>/update', methods=['POST'])
+def update(id):
     record = DocType.query.get_or_404(id)
     form = DocTypeForm()
 
@@ -51,15 +52,15 @@ def table_update(id):
             db.session.add(record)
             db.session.commit()
             flash("Запись успешно обновлена!", 'success')
-            return redirect(url_for('page_table_index'))
+            return redirect(url_for('doctype.index'))
     abort(404)
 
-@app.route('/doctype/<int:id>/delete')
-def table_delete(id):
+@doctype.route('/<int:id>/delete')
+def delete(id):
     record = DocType.query.get_or_404(id)
     if record:
         db.session.delete(record)
         db.session.commit()
         flash("Запись успешно удалена!", 'success')
-        return redirect(url_for('page_table_index'))
+        return redirect(url_for('doctype.index'))
     abort(404)

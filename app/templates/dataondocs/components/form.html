@@ -1,0 +1,37 @@
+{{ form.csrf_token() }}
+
+<div class="row mb-2">
+    <div class="col-8">
+        <div class="mb-2">
+            {{ form.doctype.label(class="form-label") }}
+            {{ form.doctype(class="form-select") }}
+        </div>
+    </div>
+    <div class="col-4">
+        <div class="mb-2">
+            {{ form.date.label(class="form-label") }}
+            {{ form.date(class="form-control") }}
+        </div>
+    </div>
+
+</div>
+<div class="row mb-2">
+    <div class="col">
+        <div class="mb-2">
+            {{ form.sent.label(class="form-label") }}
+            {{ form.sent(class="form-control", value=record.sent if record) }}
+        </div>
+    </div>
+    <div class="col">
+        <div class="mb-2">
+            {{ form.mistakes.label(class="form-label") }}
+            {{ form.mistakes(class="form-control", value=record.mistakes if record) }}
+        </div>
+    </div>
+    <div class="col">
+        <div class="mb-2">
+            {{ form.done.label(class="form-label") }}
+            {{ form.done(class="form-control", value=record.done if record) }}
+        </div>
+    </div>
+</div>

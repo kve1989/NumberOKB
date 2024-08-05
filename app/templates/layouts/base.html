@@ -129,30 +129,34 @@
                         data-bs-parent="#sidebar-nav"
                     >
                         <li>
-                            <a class="{{ 'active' if active_page == 'doctype' }}" href="{{ url_for('page_table_index')}}">
+                            <a class="{{ 'active' if active_page == 'doctype' }}" href="{{ url_for('doctype.index')}}">
                                 <i class="bi bi-circle"></i
                                 ><span>Типы документов</span>
                             </a>
                     </ul>
                 </li>
-                <!-- End Forms Nav -->
 
                 <li class="nav-heading">Навигация</li>
 
                 <li class="nav-item">
-                    <a class="nav-link {{ '' if active_page == 'sign' else 'collapsed' }}" href="{{ url_for('page_sign_index')}}">
+                    <a class="nav-link {{ '' if active_page == 'dataondocs' else 'collapsed' }}" href="{{ url_for('dataondocs.index')}}">
+                        <i class="bi bi-list-ol"></i>
+                        <span>Цифры 2.0</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ '' if active_page == 'sign' else 'collapsed' }}" href="{{ url_for('sign.index')}}">
                         <i class="bi bi-person"></i>
                         <span>ЭЦП</span>
                     </a>
                 </li>
-                <!-- End Profile Page Nav -->
                 <li class="nav-item">
                     <a class="nav-link {{ '' if active_page == 'data' else 'collapsed' }}" href="{{ url_for('page_data_index')}}">
                         <i class="bi bi-list-ol"></i>
                         <span>Цифры</span>
                     </a>
                 </li>
-                <!-- End Profile Page Nav -->
+                <li class="nav-heading">Администратор</li>
             </ul>
         </aside>
         <!-- End Sidebar-->
@@ -160,19 +164,19 @@
         <main id="main" class="main">
             <div class="position-relative">
                 {% with messages = get_flashed_messages(with_categories=True) %}
-                {% if messages %}
-                    {% for category, message in messages %}
-                        <div class="alert alert-{{ category }} alert-dismissible fade show m-3 position-absolute top-0 end-0" role="alert">
-                            {{ message }}
-                            <button
-                                type="button"
-                                class="btn-close"
-                                data-bs-dismiss="alert"
-                                aria-label="Close"
-                            ></button>
-                        </div>
-                    {% endfor %}
-                {% endif %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }} alert-dismissible fade show m-3 position-absolute top-0 end-0" role="alert">
+                                {{ message }}
+                                <button
+                                    type="button"
+                                    class="btn-close"
+                                    data-bs-dismiss="alert"
+                                    aria-label="Close"
+                                ></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
                 {% endwith %}
                 <div class="pagetitle">
                     <h1>{{ page_title }}</h1>

@@ -1,4 +1,6 @@
 from . import db
+import sqlalchemy as sa
+import sqlalchemy.orm as so
 
 class DocType(db.Model):
     __tablename__ = 'DocType'
@@ -7,6 +9,18 @@ class DocType(db.Model):
 
     def __repr__(self):
         return '<DocType %r>' % self.id
+
+class DataOnDocs(db.Model):
+    __tablename__ = 'DataOnDocs'
+    id: so.Mapped[int] = so.mapped_column(sa.Integer, primary_key=True)
+    date: so.Mapped[int] = so.mapped_column(sa.Date)
+    done: so.Mapped[int] = so.mapped_column(sa.Integer, nullable=True, default=0)
+    sent: so.Mapped[int] = so.mapped_column(sa.Integer, nullable=True, default=0)
+    mistakes: so.Mapped[int] = so.mapped_column(sa.Integer, nullable=True, default=0)
+
+    doctype_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey(DocType.id), index=True)
+    def __repr__(self):
+        return '<DataOnDoc %r>' % self.id
 
 # 1. Протокол консультации
 class ProtocConsult(db.Model):

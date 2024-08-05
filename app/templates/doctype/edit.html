@@ -5,13 +5,13 @@
 {% block body %}
 <section class="section">
     <div class="card mt-3">
-        <form action="{{ url_for('table_update', id=record.id) }}" method="POST" enctype=multipart/form-data>
+        <form action="{{ url_for('doctype.update', id=record.id) }}" method="POST" enctype=multipart/form-data>
             <div class="card-header">Изменение записи {{ record.owner }}</div>
             <div class="card-body">
                 {% include "doctype/components/form.html" %}
             </div>
             <div class="card-footer d-flex justify-content-end">
-                <a class="btn btn-secondary me-2" href="{{ url_for('page_table_index') }}">Отмена</a>
+                <a class="btn btn-secondary me-2" href="{{ url_for('doctype.index') }}">Отмена</a>
                 <button class="btn btn-success" type="submit"><i class="far fa-save me-1"></i>Изменить</button>
             </div>
         </form>

@@ -1,0 +1,127 @@
+{% extends 'layouts/base.html' %}
+{% block title %} Данные по документам {% endblock %}
+{% set active_page = 'dataondocs' %}
+{% block body %}
+    <section class="section">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addDataModal">
+            <i class="far fa-plus"></i>
+        </button>
+        <div class="row my-2">
+            <form action="{{ url_for('dataondocs.index')}}">
+                <div class="row">
+                    <div class="col-6">
+                        {{ form.doctype(class="form-select") }}
+                    </div>
+
+                    <div class="col">
+                        <input type="submit" value="Выбрать" class="btn btn-primary">
+                        <a href="{{ url_for('dataondocs.index') }}" class="btn btn-secondary">Сброс</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <hr>
+        <table class="table table-hover mt-2">
+            <thead>
+                <tr class="table-light">
+                    <th class="col align-middle">#</th>
+                    <th class="col align-middle">Код документа</th>
+                    <th class="col align-middle">Тип документа</th>
+                    <th class="col align-middle"><i class="far fa-calendar-alt me-1"></i> Дата</th>
+                    <th class="col align-middle"><i class="fas fa-check me-1 text-success"></i> Выполнено</th>
+                    <th class="col align-middle"><i class="fas fa-paper-plane me-1 text-primary"></i> Отправлено</th>
+                    <th class="col align-middle"><i class="fas fa-exclamation-circle me-1 text-danger"></i> Ошибки</th>
+                    <th class="col align-middle"><i class="fas fa-bolt me-1 text-secondary"></i> Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% if records %}
+                {% for record in records %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ record.doctype_id }}</td>
+                        {% for doctype in doctypes %}
+                            {% if doctype.id == record.doctype_id %}
+                                <td>{{ doctype.name }}</td>
+                            {% endif %}
+                        {% endfor %}
+                        <td>{{ moment(record.date).format('DD-MM-YYYY') }}</td>
+                        <td>{{ record.done }}</td>
+                        <td>{{ record.sent }}</td>
+                        <td>{{ record.mistakes }}</td>
+                        <td>
+                            <a href="{{ url_for('dataondocs.edit_record', id=record.id) }}" class="link text-primary me-2">
+                                <i class="fas fa-pencil-alt me-1"></i>Изменить
+                            </a>
+                            <a href="{{ url_for('dataondocs.delete_record', id=record.id) }}" class="link text-danger">
+                                <i class="fas fa-trash-alt me-1"></i>Удалить
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="6" class="text-center">Данных нет</td>
+                </tr>
+            {% endif %}
+                <tr class="table-warning fw-bold">
+                    <td colspan="4">Итого:</td>
+                    <td>{{ records|sum(attribute="done") }}</td>
+                    <td>{{ records|sum(attribute="sent") }}</td>
+                    <td>{{ records|sum(attribute="mistakes") }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <p class="text-secondary fst-italic p-0">
+            Всего записей: {{ records|length if records else '0'}}
+        </p>
+    </section>
+    <div class="modal fade" id="addDataModal" tabindex="-1" aria-labelledby="addDataModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <form action="{{ url_for('dataondocs.add_record') }}" method="POST" enctype=multipart/form-data>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addDataModalLabel">Добавление записи</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        {% include "dataondocs/components/form.html" %}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                        <button class="btn btn-success" type="submit"><i class="far fa-save me-1"></i>Добавить</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="modal fade" id="editDataModal" tabindex="-1" aria-labelledby="editDataModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <form action="" method="POST" enctype=multipart/form-data>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editDataModalLabel">Изменение записи</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        {% include "dataondocs/components/form.html" %}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                        <button class="btn btn-success" type="submit"><i class="far fa-save me-1"></i>Изменить</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    {{ super() }}
+    <script>
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    </script>
+{% endblock %}
