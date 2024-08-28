@@ -14,7 +14,7 @@
     <section class="section">
         <div class="card mb-2">
             <div class="card-body">
-                <form id="SearchFormFromAdminPage" action=" {{ url_for('page_data_index') }} " method="post">
+                <form id="SearchFormFromAdminPage" action=" {{ url_for('data.page_data_index') }} " method="post">
                     {{ form.csrf_token() }}
 
                     <div class="row mb-2">
@@ -34,7 +34,7 @@
                             </select>
                         </div>
                         <div class="col-1">
-                            <a class="btn btn-warning w-auto" aria-current="page" href="{{ url_for('page_data_create') }}"
+                            <a class="btn btn-warning w-auto" aria-current="page" href="{{ url_for('data.page_data_create') }}"
                                 data-bs-toggle="tooltip" data-bs-placement="top" title="Добавить новую запись">
                                 <i class="far fa-plus"></i>
                             </a>
@@ -63,10 +63,10 @@
                         <td>{{ record.sent }}</td>
                         <td>{{ record.mistakes }}</td>
                         <td>
-                            <a class="link text-primary me-2" href="{{ url_for('page_data_edit', id=record.id) }}">
+                            <a class="link text-primary me-2" href="{{ url_for('data.page_data_edit', id=record.id) }}">
                                 <i class="fas fa-pencil-alt me-1"></i>Изменить
                             </a>
-                            <a class="link text-danger" href="{{ url_for('data_delete', id=record.id) }}">
+                            <a class="link text-danger" href="{{ url_for('data.data_delete', id=record.id) }}">
                                 <i class="fas fa-trash-alt me-1"></i>Удалить
                             </a>
                         </td>

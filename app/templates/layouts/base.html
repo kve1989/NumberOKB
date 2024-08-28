@@ -113,6 +113,28 @@
                     </a>
                 </li>
                 <!-- End Dashboard Nav -->
+
+                <li class="nav-heading">Навигация</li>
+
+                <li class="nav-item">
+                    <a class="nav-link {{ '' if active_page == 'dataondocs' else 'collapsed' }}" href="{{ url_for('dataondocs.index')}}">
+                        <i class="bi bi-list-ol"></i>
+                        <span>Цифры 2.0</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ '' if active_page == 'sign' else 'collapsed' }}" href="{{ url_for('sign.index')}}">
+                        <i class="bi bi-person"></i>
+                        <span>ЭЦП</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ '' if active_page == 'data' else 'collapsed' }}" href="{{ url_for('data.page_data_index')}}">
+                        <i class="bi bi-list-ol"></i>
+                        <span>Цифры</span>
+                    </a>
+                </li>
+                <li class="nav-heading">Администратор</li>
                 <li class="nav-item">
                     <a
                         class="nav-link {{ '' if active_page == 'doctype' else 'collapsed' }}"
@@ -135,28 +157,6 @@
                             </a>
                     </ul>
                 </li>
-
-                <li class="nav-heading">Навигация</li>
-
-                <li class="nav-item">
-                    <a class="nav-link {{ '' if active_page == 'dataondocs' else 'collapsed' }}" href="{{ url_for('dataondocs.index')}}">
-                        <i class="bi bi-list-ol"></i>
-                        <span>Цифры 2.0</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ '' if active_page == 'sign' else 'collapsed' }}" href="{{ url_for('sign.index')}}">
-                        <i class="bi bi-person"></i>
-                        <span>ЭЦП</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ '' if active_page == 'data' else 'collapsed' }}" href="{{ url_for('page_data_index')}}">
-                        <i class="bi bi-list-ol"></i>
-                        <span>Цифры</span>
-                    </a>
-                </li>
-                <li class="nav-heading">Администратор</li>
             </ul>
         </aside>
         <!-- End Sidebar-->

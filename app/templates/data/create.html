@@ -5,7 +5,7 @@
 {% block body %}
 <section class="section">
     <div class="card mt-3">
-        <form action="{{ url_for('data_store') }}" method="POST">
+        <form action="{{ url_for('data.data_store') }}" method="POST">
         <div class="card-header">Добавление записи</div>
         <div class="card-body">
                 <div class="row mb-2">
@@ -22,7 +22,7 @@
                 {% include "data/components/form.html" %}
             </div>
             <div class="card-footer d-flex justify-content-end">
-                <a class="btn btn-secondary me-2" href="{{ url_for('page_data_index') }}">Отмена</a>
+                <a class="btn btn-secondary me-2" href="{{ url_for('data.page_data_index') }}">Отмена</a>
                 <button class="btn btn-success" type="submit"><i class="far fa-save me-1"></i>Добавить</button>
             </div>
         </form>
