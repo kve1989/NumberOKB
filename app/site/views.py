@@ -1,15 +1,16 @@
-from flask import render_template, session
+from flask import render_template, session, Blueprint
 from datetime import date, timedelta
-from . import app, db
-from .models import *
-from .forms import SearchForm, tables
+from app.models import *
+from app.site.forms import SearchForm, tables
+
+site = Blueprint('site', __name__)
 
 def get_date():
     return date.today() - timedelta(days=1)
 
 default_date = get_date()
 
-@app.route("/", methods=["GET", "POST"])
+@site.route("/", methods=["GET", "POST"])
 def home():
 
     """ Создаем форму поиска """

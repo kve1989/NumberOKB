@@ -34,6 +34,7 @@ def add_record():
             mistakes = form.mistakes.data,
             doctype_id = form.doctype.data
         )
+        print(record)
         db.session.add(record)
         db.session.commit()
         flash("Запись успешно добавлена!", 'success')

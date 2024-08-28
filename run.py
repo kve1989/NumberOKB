@@ -1,6 +1,11 @@
-from app import app, db
-from app.models import DocType
 import os
+from flask_migrate import Migrate
+from app import create_app, db
+from app.models import DocType
+
+app = create_app()
+app.app_context().push()
+migrate = Migrate(app, db)
 
 doctype = ["Контрольная карта диспансеризации",
 "Лабораторные исследования",

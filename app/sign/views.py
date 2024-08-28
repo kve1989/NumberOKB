@@ -1,11 +1,12 @@
-from flask import render_template, request, redirect, flash, url_for, send_from_directory, abort, Blueprint
+from flask import render_template, request, redirect, flash, url_for, send_from_directory, abort, Blueprint, current_app
 from werkzeug.utils import secure_filename
 import os
-from . import app, db
+from app import create_app, db
+from app.helpers import generateFilename, parseCertificate
 from .models import Signs
 from .forms import SignForm
-from .helpers import generateFilename, parseCertificate
 
+app = create_app
 sign = Blueprint('sign', __name__, url_prefix='/sign')
 
 @sign.route('/')
@@ -24,17 +25,17 @@ def store():
 
     if form.validate_on_submit():
         """Сохраняем контейнер и сертификат в файлы на диск"""
-        request.files['fileCertificate'].save(os.path.join(app.config['UPLOAD_FOLDER'], fileCertificate))
-        request.files['fileContainer'].save(os.path.join(app.config['UPLOAD_FOLDER'], fileContainer))
+        request.files['fileCertificate'].save(os.path.join(current_app.config['UPLOAD_FOLDER'], fileCertificate))
+        request.files['fileContainer'].save(os.path.join(current_app.config['UPLOAD_FOLDER'], fileContainer))
 
         """Здесь храним распарсенный сертификат"""
-        parsedCert = parseCertificate(os.path.join(app.config['UPLOAD_FOLDER'], fileCertificate))
+        parsedCert = parseCertificate(os.path.join(current_app.config['UPLOAD_FOLDER'], fileCertificate))
 
         """Проверка на существование имеющегося сертификата в БД по серийному номеру"""
         duplicate_cert = Signs.query.filter_by(serial_number=parsedCert['serial_number']).one_or_none()
         if duplicate_cert:
-            os.remove(os.path.join(app.config['UPLOAD_FOLDER'], fileCertificate))
-            os.remove(os.path.join(app.config['UPLOAD_FOLDER'], fileContainer))
+            os.remove(os.path.join(current_app.config['UPLOAD_FOLDER'], fileCertificate))
+            os.remove(os.path.join(current_app.config['UPLOAD_FOLDER'], fileContainer))
             flash("Такой сертификат уже есть в хранилице", 'danger')
             return redirect(url_for('sign.index'))
 
@@ -63,16 +64,16 @@ def delete(id):
     if record:
         db.session.delete(record)
         db.session.commit()
-        if os.path.exists(os.path.join(app.config['UPLOAD_FOLDER'], record.fileCertificate)):
-            os.remove(os.path.join(app.config['UPLOAD_FOLDER'], record.fileCertificate))
+        if os.path.exists(os.path.join(current_app.config['UPLOAD_FOLDER'], record.fileCertificate)):
+            os.remove(os.path.join(current_app.config['UPLOAD_FOLDER'], record.fileCertificate))
 
-        if os.path.exists(os.path.join(app.config['UPLOAD_FOLDER'], record.fileContainer)):
-            os.remove(os.path.join(app.config['UPLOAD_FOLDER'], record.fileContainer))
+        if os.path.exists(os.path.join(current_app.config['UPLOAD_FOLDER'], record.fileContainer)):
+            os.remove(os.path.join(current_app.config['UPLOAD_FOLDER'], record.fileContainer))
 
         flash("Запись успешно удалена!", 'success')
         return redirect(url_for('sign.index'))
     abort(404)
 
-@app.route('/uploads/<file>')
+@current_app.route('/uploads/<file>')
 def download_file(file):
-    return send_from_directory(app.config["UPLOAD_FOLDER"], file)
+    return send_from_directory(current_app.config["UPLOAD_FOLDER"], file)

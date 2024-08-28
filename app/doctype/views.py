@@ -1,5 +1,5 @@
 from flask import render_template, request, redirect, flash, url_for, abort, Blueprint
-from . import app, db
+from app import db
 from .models import DocType
 from .forms import DocTypeForm
 

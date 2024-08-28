@@ -1,11 +1,19 @@
-from flask import render_template, request, redirect, flash, session, url_for
-from . import app, db
-from .models import *
-from .forms import Form, SearchForm, tables
-from .views import default_date, get_date
-from datetime import datetime
+from flask import render_template, request, redirect, flash, session, url_for, Blueprint
+from app import db
+from app.models import *
+from app.forms import Form, tables
+from app.site.forms import SearchForm
+from datetime import datetime, date, timedelta
 
-@app.route("/data", methods=["POST", "GET"])
+def get_date():
+    return date.today() - timedelta(days=1)
+
+default_date = get_date()
+
+
+data = Blueprint('data', __name__)
+
+@data.route("/data", methods=["POST", "GET"])
 def page_data_index():
     """ Форма поиска """
     form = SearchForm()
@@ -29,20 +37,20 @@ def page_data_index():
     return render_template('data/index.html', records=records, form=form, tables=tables)
 
 
-@app.route("/data/create")
+@data.route("/data/create")
 def page_data_create():
     form = Form()
     return render_template('data/create.html', form=form, tables=tables, date=get_date())
 
 
-@app.route("/data/<int:id>/edit")
+@data.route("/data/<int:id>/edit")
 def page_data_edit(id):
     form = Form()
     record = eval(session['table']).query.get_or_404(id)
     return render_template('data/edit.html', form=form, record=record, tables=tables)
 
 
-@app.route("/data/new", methods=['POST'])
+@data.route("/data/new", methods=['POST'])
 def data_store():
     date = datetime.strptime(request.form['date'], "%Y-%m-%d")
 
@@ -60,7 +68,7 @@ def data_store():
             flash("Запись успешно добавлена!", 'success')
         except:
             flash("Ошибка при добавлении!", 'danger')
-        return redirect(url_for('page_data_index'))
+        return redirect(url_for('data.page_data_index'))
 
     if form.errors != {}:
         for err_msg in form.errors.values():
@@ -68,7 +76,7 @@ def data_store():
 
     return render_template('data/create.html', form=form)
 
-@app.route("/data/<int:id>/update", methods=['POST'])
+@data.route("/data/<int:id>/update", methods=['POST'])
 def data_update(id):
     record = eval(session['table']).query.get_or_404(id)
     form = Form()
@@ -90,7 +98,7 @@ def data_update(id):
             flash("Ошибка при изменении!", 'danger')
             return render_template('data/edit.html', form=form, record=record, tables=tables)
 
-@app.route("/data/<int:id>/delete")
+@data.route("/data/<int:id>/delete")
 def data_delete(id):
     record = eval(session['table']).query.get_or_404(id)
 

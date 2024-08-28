@@ -1,10 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, DateField, IntegerField, SelectField
-from wtforms.validators import DataRequired, InputRequired
-from app.models import DocType
-from . import db
-import sqlalchemy as sa
-from datetime import date
+from wtforms import DateField, SelectField
+from wtforms.validators import DataRequired
+
 tables = [
     # ('ProtocConsult', 'Протокол консультации'),
     ('ProfMedicalExam', 'Контрольная карта диспансеризации'),
@@ -35,22 +32,8 @@ tables = [
     ('ELNClose', 'ЭЛН закрытых')
 ]
 
-class Form(FlaskForm):
-    """Определяем форму с полями и берем за основу"""
-    date = DateField('Дата', validators=[DataRequired()])
-    sent = IntegerField('Отправлено')
-    mistakes = IntegerField('Ошибки')
-    done = IntegerField('Выполнено')
+class SearchForm(FlaskForm):
+    """Форма для поиска"""
     table = SelectField('Таблица', choices=tables, validators=[DataRequired()])
-
-class DataOnDocsForm(FlaskForm):
-    query = db.session.scalars(sa.select(DocType)).all()
-    doctypes = [['', '']]
-    selected_doctype = 0
-    for p in query:
-        doctypes.append([p.id, p.name])
-    date = DateField('Дата', default=date.today(), validators=[DataRequired()])
-    sent = IntegerField('Отправлено', validators=[InputRequired()])
-    mistakes = IntegerField('Ошибки', validators=[InputRequired()])
-    done = IntegerField('Выполнено', validators=[InputRequired()])
-    doctype = SelectField('Документ', choices=doctypes, default=selected_doctype, validators=[DataRequired()])
+    date = DateField('Начало', validators=[DataRequired()])
+    date_end = DateField('Конец')

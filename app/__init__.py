@@ -1,23 +1,42 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_moment import Moment
-from flask_migrate import Migrate
+
 from config import Config
 
-app = Flask(__name__)
-app.config.from_object(Config)
-app.app_context().push()
+db = SQLAlchemy()
+moment = Moment()
 
-db = SQLAlchemy(app)
-moment = Moment(app)
-migrate = Migrate(app, db)
+def create_app():
+    app = Flask(__name__)
+    app.config.from_object(Config)
+    app.app_context().push()
 
-from .sign import sign
-app.register_blueprint(sign)
-from .doctype import doctype
-app.register_blueprint(doctype)
-from .dataondocs import dataondocs
-app.register_blueprint(dataondocs)
+    db.init_app(app)
+    moment.init_app(app)
 
-from . import views, errors, models
-from . import data
+    with app.app_context():
+        db.create_all()
+
+    from app.sign.views import sign
+    app.register_blueprint(sign)
+
+    from app.doctype.views import doctype
+    app.register_blueprint(doctype)
+
+    from app.dataondocs import dataondocs
+    app.register_blueprint(dataondocs)
+
+    from app.data import data
+    app.register_blueprint(data)
+
+    from app.site.views import site
+    app.register_blueprint(site)
+
+    from app.errors import err
+    app.register_blueprint(err)
+
+    return app
+
+# from . import views, errors, models
+# from . import data
